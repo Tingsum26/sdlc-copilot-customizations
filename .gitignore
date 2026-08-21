@@ -1,0 +1,10 @@
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build / package artifacts
+dist/
+node_modules/
+*.zip
+*.sha256
