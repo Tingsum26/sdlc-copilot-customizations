@@ -10,7 +10,7 @@
   "templates": 20,
   "hooks": 1,
   "profiles": 1,
-  "referencesFile": "central/REFERENCES.md",
+  "referencesFile": "REFERENCES.md",
   "compatibility": {
     "vscode": ">=1.100",
     "copilot": "chat-agent-mode",
