@@ -11,7 +11,7 @@ projects below. Status captured 2026-08-18.
 | obra/superpowers | 273,524 | MIT | SKILL.md frontmatter structure and RED/GREEN contract-eval pattern |
 | github/spec-kit | 130,050 | MIT | Requirement → spec → plan → task → archive phase boundaries |
 | Fission-AI/OpenSpec | 65,348 | MIT | Spec lifecycle concept (propose/apply/archive) |
-| github/awesome-copilot | 37,977 | MIT | VS Code `.agent.md` fields (name/description/model/tools/handoffs) |
+| github/awesome-copilot | 37,977 | MIT | VS Code `.agent.md` fields (name/description/model/tools/handoffs); agent-body concepts adapted 2026-08-22 from `agents/tdd-red.agent.md`+green/refactor (test-first phases), `skills/spring-boot-testing/SKILL.md` (JUnit+AssertJ pyramid), `skills/security-review/SKILL.md` (reasoning-based vuln scan), `instructions/a11y.instructions.md` (WCAG 2.2 AA anti-patterns), `agents/debug.agent.md` (root-cause triage), `skills/create-implementation-plan/SKILL.md`+`github/spec-kit` boundaries (ordered verifiable plan steps) |
 | arozumenko/sdlc-skills | 19 | MIT | SDLC role division with Copilot-compatible wording |
 | addyosmani/agent-skills | 88,253 | MIT | Review/test/TDD skill step breakdowns and checklists |
 | Jeffallan/claude-skills | 11,059 | MIT | Full-stack skill step decomposition per topic |
