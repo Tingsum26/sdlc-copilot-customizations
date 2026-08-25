@@ -13,9 +13,11 @@ Before performing any role-specific work:
 
 1. Check out the target `journey/<change-id>-<slug>` branch and read
    `.sdlc/workflow.json`.
-2. Run `node scripts/prepare-journey-context.mjs --stage <STAGE> --role <ROLE>`.
-   It creates a pinned Context Receipt containing the exact upstream artifacts
-   and their SHA-256 hashes, plus the stage's required Skill route.
+2. The Coordinator/Agent automatically invokes the internal
+   `prepare-stage-context` Skill (which runs the local script). The user does
+   not need to type the Node command. It creates a pinned Context Receipt
+   containing the exact upstream artifacts and their SHA-256 hashes, plus the
+   stage's required Skill route.
 3. Read every artifact listed in that receipt. If the command fails, an input
    is missing, or an input is not approved where approval is required, stop.
    Report `BLOCKED_BY_CONTEXT`; do not create a substitute artifact from chat
@@ -31,3 +33,18 @@ and its reason in `.sdlc/workflow.json`. Silent skips are forbidden. A Context
 Receipt proves that the required, version-pinned inputs were supplied to the
 role; it cannot prove semantic understanding. Human PR review remains the
 control for that last limitation.
+
+The stage gate is deterministic and sequential. A specialist writes its one
+output and stops at `PENDING_APPROVAL`. Only after a human records approval (or
+an evidence-backed skip) may the Coordinator invoke the internal
+`advance-stage` Skill. That Skill follows `stageOrder`; it never accepts a
+requested target stage, so a user cannot jump from Requirements to Plan. The
+same `.sdlc/workflow.json` and committed Markdown are read by the Coordinator,
+all specialist Agents and the VSIX, which therefore show the same current
+stage, gate state and next Agent.
+
+All committed Markdown in the Journey repository is shared, durable context;
+Copilot chat history is not. The Context Receipt requires the relevant
+upstream documents for each stage, while the full repository remains available
+for discovery. This selective mandatory input prevents oversized or stale
+prompts without hiding any Agent output.

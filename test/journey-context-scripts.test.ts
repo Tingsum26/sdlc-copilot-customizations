@@ -9,6 +9,7 @@ const root = join(import.meta.dirname, "..");
 const node = process.execPath;
 const prepare = join(root, "scripts", "prepare-journey-context.mjs");
 const verify = join(root, "scripts", "verify-journey-artifact.mjs");
+const advance = join(root, "scripts", "advance-journey-stage.mjs");
 
 describe("GitHub Journey Context Receipt scripts", () => {
   it("pins approved upstream artifacts and rejects a stale receipt", () => {
@@ -39,6 +40,31 @@ describe("GitHub Journey Context Receipt scripts", () => {
       const stale = spawnSync(node, [verify, "--workspace", workspace, "--stage", "REQUIREMENTS", "--artifact", "docs/02-requirements/contract.md"], { encoding: "utf8" });
       expect(stale.status).not.toBe(0);
       expect(stale.stderr).toMatch(/stale/i);
+    } finally {
+      rmSync(workspace, { recursive: true, force: true });
+    }
+  });
+
+  it("blocks stage advancement until human approval, then advances only in declared order", () => {
+    const workspace = mkdtempSync(join(tmpdir(), "journey-gate-"));
+    try {
+      mkdirSync(join(workspace, ".sdlc"), { recursive: true });
+      const state = {
+        workflowId: "AO-123", journeyId: "account-opening", currentStage: "REQUIREMENTS", status: "IN_PROGRESS",
+        journeyRepository: { status: "CONFIGURED", name: "journey-account-opening", remote: "https://github.example/journey-account-opening" },
+        stageOrder: ["REQUIREMENTS", "DESIGN"],
+        artifacts: { REQUIREMENT_CONTRACT: { path: "docs/requirement.md", status: "PENDING_APPROVAL" } },
+        stages: { REQUIREMENTS: { role: "requirement-analyst", output: "REQUIREMENT_CONTRACT" }, DESIGN: { role: "solution-architect", output: "SOLUTION_DESIGN" } },
+      };
+      writeFileSync(join(workspace, ".sdlc", "workflow.json"), JSON.stringify(state));
+      const blocked = spawnSync(node, [advance, "--workspace", workspace, "--actor", "alice", "--evidence", "PR-1"], { encoding: "utf8" });
+      expect(blocked.status).not.toBe(0);
+      expect(blocked.stderr).toMatch(/GATE_BLOCKED/);
+      state.artifacts.REQUIREMENT_CONTRACT.status = "APPROVED";
+      writeFileSync(join(workspace, ".sdlc", "workflow.json"), JSON.stringify(state));
+      const advanced = spawnSync(node, [advance, "--workspace", workspace, "--actor", "alice", "--evidence", "PR-1"], { encoding: "utf8" });
+      expect(advanced.status, advanced.stderr).toBe(0);
+      expect(JSON.parse(readFileSync(join(workspace, ".sdlc", "workflow.json"), "utf8")).currentStage).toBe("DESIGN");
     } finally {
       rmSync(workspace, { recursive: true, force: true });
     }

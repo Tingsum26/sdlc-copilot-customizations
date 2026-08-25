@@ -4,7 +4,7 @@
   "agents": {
     "delivery-coordinator": {
       "requiredSkills": ["initialize-journey-workspace", "start-epic", "resume-workflow"],
-      "allowedSkills": ["prepare-stage-context", "join-epic", "change-epic", "find-blockers", "check-release-readiness", "draft-jira-update"]
+      "allowedSkills": ["advance-stage", "prepare-stage-context", "join-epic", "change-epic", "find-blockers", "check-release-readiness", "draft-jira-update"]
     },
     "epic-delivery-analyst": {
       "requiredSkills": ["prepare-stage-context", "analyze-code-context", "analyze-epic-risk"],

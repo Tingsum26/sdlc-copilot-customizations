@@ -13,6 +13,8 @@
   },
   "branch": "journey/AO-123-open-account",
   "currentStage": "REQUIREMENTS",
+  "stageOrder": ["REQUIREMENTS", "DESIGN", "PLAN", "TEST", "REVIEW"],
+  "stageHistory": [],
   "status": "IN_PROGRESS",
   "sourceTickets": ["AO-123"],
   "affectedRepositories": [

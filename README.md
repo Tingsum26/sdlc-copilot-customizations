@@ -12,15 +12,21 @@ or a server-side agent. A Journey repository branch is the source of truth.
 Its `.sdlc/workflow.json`, versioned Markdown artifacts, Context Receipts and
 pull requests provide persistence, recovery and audit.
 
-Before any agent starts a stage it must run the deterministic context-pack
-script, read the pinned upstream artifacts, and put the receipt hash in its
-output. The PR workflow then validates that the receipt is current. See:
+Before any agent starts a stage, the Coordinator or specialist automatically
+invokes the internal `prepare-stage-context` Skill. It reads the pinned
+upstream artifacts and puts the receipt hash in its output; the user does not
+need to run a Node command. A deterministic stage gate then holds the output at
+`PENDING_APPROVAL` until a human approves it (or records an evidence-backed
+`SKIPPED_WITH_EVIDENCE`). Only the Coordinator's `advance-stage` Skill may move
+`stageOrder` forward. The PR workflow validates that the receipt is current.
+See:
 
 - `instructions/github-journey-collaboration.instructions.md`
 - `templates/journey-workflow.json`
 - `templates/journey-artifact.md`
 - `templates/verify-journey.yml`
 - `scripts/prepare-journey-context.mjs`
+- `scripts/advance-journey-stage.mjs`
 - `scripts/verify-journey-artifact.mjs`
 - `manifests/agent-skill-routing.json`
 
@@ -47,7 +53,7 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 | Directory      | Count | Description                                            |
 |----------------|-------|--------------------------------------------------------|
 | `agents/`      | 13    | `.agent.md` role definitions (planner, implementers, …) |
-| `skills/`      | 35    | `SKILL.md` files organized by lifecycle phase           |
+| `skills/`      | 36    | `SKILL.md` files organized by lifecycle phase           |
 | `instructions/`| 19    | Per-domain instruction sets                            |
 | `policies/`    | 15    | Machine-readable policy JSON (+ `README.md` vocabulary) |
 | `templates/`   | 20    | Reusable artifact templates                            |
@@ -63,7 +69,7 @@ no longer a byte-identical subtree extraction.
 ## Known gap (partial catalog)
 
 This bundle is a **PARTIAL** extraction. The fully approved central catalog
-records more than the 13 Agents / 35 Skills / 19 Instructions present here;
+records more than the 13 Agents / 36 Skills / 19 Instructions present here;
 the remaining entries have not yet been split out of the platform monorepo and
 are not included in this repository. Treat the inventory above as the subset
 that is currently published, not the complete approved catalog.
