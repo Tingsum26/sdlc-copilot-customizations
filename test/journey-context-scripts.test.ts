@@ -25,13 +25,13 @@ describe("GitHub Journey Context Receipt scripts", () => {
           JOURNEY_BASELINE: { path: "docs/01-context/baseline.md", status: "APPROVED" },
           CODE_CONTEXT: { path: "docs/01-context/code-context.md", status: "APPROVED" },
         },
-        stages: { REQUIREMENTS: { role: "requirement-analyst", requiredInputs: ["JOURNEY_BASELINE", "CODE_CONTEXT"] } },
+        stages: { REQUIREMENTS: { role: "requirement-analyst", requiredSkills: ["prepare-stage-context", "start-ticket", "grill-requirement"], requiredInputs: ["JOURNEY_BASELINE", "CODE_CONTEXT"] } },
       }, null, 2));
       const created = spawnSync(node, [prepare, "--workspace", workspace, "--stage", "REQUIREMENTS", "--role", "requirement-analyst"], { encoding: "utf8" });
       expect(created.status, created.stderr).toBe(0);
       const receiptPath = join(workspace, ".sdlc", "context-receipts", "requirements-requirement-analyst.json");
       const receiptHash = createHash("sha256").update(readFileSync(receiptPath)).digest("hex");
-      writeFileSync(join(workspace, "docs", "02-requirements", "contract.md"), `---\nworkflowId: AO-123\nstage: REQUIREMENTS\nrole: requirement-analyst\nappliedSkills: start-ticket@1.0, grill-requirement@1.0\ncontextReceipt: .sdlc/context-receipts/requirements-requirement-analyst.json\ncontextReceiptSha256: ${receiptHash}\n---\n# Contract\n`);
+      writeFileSync(join(workspace, "docs", "02-requirements", "contract.md"), `---\nworkflowId: AO-123\nstage: REQUIREMENTS\nrole: requirement-analyst\nappliedSkills: prepare-stage-context@1.0, start-ticket@1.0, grill-requirement@1.0\ncontextReceipt: .sdlc/context-receipts/requirements-requirement-analyst.json\ncontextReceiptSha256: ${receiptHash}\n---\n# Contract\n`);
       const valid = spawnSync(node, [verify, "--workspace", workspace, "--stage", "REQUIREMENTS", "--artifact", "docs/02-requirements/contract.md"], { encoding: "utf8" });
       expect(valid.status, valid.stderr).toBe(0);
       writeFileSync(join(workspace, "docs", "01-context", "baseline.md"), "changed baseline\n");

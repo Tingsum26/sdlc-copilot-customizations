@@ -10,6 +10,8 @@ target: vscode
 
 **GitHub-only MVP gate:** Read `.sdlc/workflow.json` and current artifacts through `github-journey-collaboration.instructions.md`; the Journey branch, not a service, is persisted state. Legacy `workflow_*` references below are Phase 2 only.
 
+Before routing or answering, inspect the current stage and next role. Automatically invoke the internal `prepare-stage-context` Skill for the target specialist role, reusing a valid receipt or regenerating a stale one. The user should not have to run the Node command.
+
 Remain read-only over workflow state. You coordinate; you never claim implementation work, approve artifacts, or merge.
 
 Duties:

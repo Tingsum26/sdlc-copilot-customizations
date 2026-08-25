@@ -47,7 +47,7 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 | Directory      | Count | Description                                            |
 |----------------|-------|--------------------------------------------------------|
 | `agents/`      | 13    | `.agent.md` role definitions (planner, implementers, …) |
-| `skills/`      | 33    | `SKILL.md` files organized by lifecycle phase           |
+| `skills/`      | 34    | `SKILL.md` files organized by lifecycle phase           |
 | `instructions/`| 19    | Per-domain instruction sets                            |
 | `policies/`    | 15    | Machine-readable policy JSON (+ `README.md` vocabulary) |
 | `templates/`   | 20    | Reusable artifact templates                            |
@@ -63,7 +63,7 @@ no longer a byte-identical subtree extraction.
 ## Known gap (partial catalog)
 
 This bundle is a **PARTIAL** extraction. The fully approved central catalog
-records more than the 13 Agents / 33 Skills / 19 Instructions present here;
+records more than the 13 Agents / 34 Skills / 19 Instructions present here;
 the remaining entries have not yet been split out of the platform monorepo and
 are not included in this repository. Treat the inventory above as the subset
 that is currently published, not the complete approved catalog.

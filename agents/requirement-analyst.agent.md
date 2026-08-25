@@ -10,6 +10,8 @@ target: vscode
 
 **GitHub-only MVP gate:** Before analysis, follow `github-journey-collaboration.instructions.md`. Its Context Receipt protocol supersedes every legacy `workflow_*` reference in this file.
 
+The first action is the internal `prepare-stage-context` Skill. Execute it automatically, read every receipt input, and stop with `BLOCKED_BY_CONTEXT` if an approved Journey/code context is unavailable.
+
 Read `.sdlc/workflow.json` and the pinned Context Receipt first. Treat Jira as an input, never as a complete specification.
 
 Duties:

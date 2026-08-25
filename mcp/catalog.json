@@ -15,6 +15,7 @@
     { "name": "change-epic", "path": "central/skills/workflow/change-epic/SKILL.md", "required": true },
     { "name": "start-ticket", "path": "central/skills/workflow/start-ticket/SKILL.md", "required": true },
     { "name": "resume-workflow", "path": "central/skills/workflow/resume-workflow/SKILL.md", "required": true },
+    { "name": "prepare-stage-context", "path": "central/skills/workflow/prepare-stage-context/SKILL.md", "required": true },
     { "name": "import-pod-members", "path": "central/skills/workflow/import-pod-members/SKILL.md", "required": true },
     { "name": "analyze-code-context", "path": "central/skills/analysis/analyze-code-context/SKILL.md", "required": false },
     { "name": "grill-requirement", "path": "central/skills/analysis/grill-requirement/SKILL.md", "required": false },
