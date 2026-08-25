@@ -2,6 +2,15 @@
   "schemaVersion": "github-journey-workflow/v1",
   "workflowId": "AO-123",
   "journeyId": "account-opening",
+  "journeyRepository": {
+    "status": "UNINITIALIZED",
+    "provider": "GITHUB_ENTERPRISE_OR_GITHUB",
+    "owner": null,
+    "name": null,
+    "remote": null,
+    "localPath": null,
+    "visibility": "PRIVATE"
+  },
   "branch": "journey/AO-123-open-account",
   "currentStage": "REQUIREMENTS",
   "status": "IN_PROGRESS",

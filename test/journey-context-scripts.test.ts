@@ -21,6 +21,7 @@ describe("GitHub Journey Context Receipt scripts", () => {
       writeFileSync(join(workspace, "docs", "01-context", "code-context.md"), "code context\n");
       writeFileSync(join(workspace, ".sdlc", "workflow.json"), JSON.stringify({
         workflowId: "AO-123", journeyId: "account-opening", branch: "journey/AO-123-open-account",
+        journeyRepository: { status: "CONFIGURED", provider: "GITHUB", owner: "example", name: "journey-account-opening", remote: "https://github.example/journey-account-opening", localPath: workspace },
         artifacts: {
           JOURNEY_BASELINE: { path: "docs/01-context/baseline.md", status: "APPROVED" },
           CODE_CONTEXT: { path: "docs/01-context/code-context.md", status: "APPROVED" },

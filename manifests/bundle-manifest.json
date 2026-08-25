@@ -4,7 +4,7 @@
   "name": "SDLC Central Customization Bundle",
   "description": "Central agents, skills, instructions, policies, templates, and evals for the public Local-Copilot SDLC platform. Fictitious data only.",
   "agents": 13,
-  "skills": 34,
+  "skills": 35,
   "instructions": 20,
   "policies": 16,
   "templates": 22,

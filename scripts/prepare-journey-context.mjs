@@ -14,6 +14,9 @@ if (!stageName || !role) throw new Error("Usage: --stage <STAGE> --role <ROLE> [
 const statePath = join(workspace, ".sdlc", "workflow.json");
 if (!existsSync(statePath)) throw new Error(`Missing ${relative(workspace, statePath)}`);
 const state = JSON.parse(readFileSync(statePath, "utf8"));
+if (state.journeyRepository?.status !== "CONFIGURED" || !state.journeyRepository?.name || !state.journeyRepository?.remote) {
+  throw new Error("BLOCKED_BY_JOURNEY_REPO: select and configure the private Journey repository before preparing stage context");
+}
 const stage = state.stages?.[stageName];
 if (!stage) throw new Error(`Unknown stage ${stageName}`);
 if (stage.role !== role) throw new Error(`Stage ${stageName} belongs to ${stage.role}, not ${role}`);

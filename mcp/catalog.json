@@ -11,6 +11,7 @@
   ],
   "skills": [
     { "name": "start-epic", "path": "central/skills/workflow/start-epic/SKILL.md", "required": true },
+    { "name": "initialize-journey-workspace", "path": "central/skills/workflow/initialize-journey-workspace/SKILL.md", "required": true },
     { "name": "join-epic", "path": "central/skills/workflow/join-epic/SKILL.md", "required": true },
     { "name": "change-epic", "path": "central/skills/workflow/change-epic/SKILL.md", "required": true },
     { "name": "start-ticket", "path": "central/skills/workflow/start-ticket/SKILL.md", "required": true },

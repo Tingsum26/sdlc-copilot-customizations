@@ -15,7 +15,7 @@ const expectedAgents = [
   "accessibility-qa", "pr-reviewer",
 ];
 const skillDirectories: Record<string, string> = {
-  "start-epic": "workflow", "join-epic": "workflow", "change-epic": "workflow",
+  "start-epic": "workflow", "initialize-journey-workspace": "workflow", "join-epic": "workflow", "change-epic": "workflow",
   "start-ticket": "workflow", "resume-workflow": "workflow", "prepare-stage-context": "workflow", "import-pod-members": "workflow",
   "analyze-code-context": "analysis", "grill-requirement": "analysis", "assess-api-compatibility": "analysis",
   "design-solution": "design", "plan-change": "design", "adr": "design",
@@ -65,7 +65,7 @@ describe("central catalog", () => {
   it("manifest counts match the catalog", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.agents).toBe(13);
-    expect(manifest.skills).toBe(34);
+    expect(manifest.skills).toBe(35);
     expect(manifest.instructions).toBe(20);
     expect(manifest.policies).toBe(16);
     expect(manifest.templates).toBe(22);
@@ -73,10 +73,10 @@ describe("central catalog", () => {
     expect(manifest.agentSkillRouting).toBe("manifests/agent-skill-routing.json");
   });
 
-  it("contains all 34 skills with valid frontmatter", () => {
+  it("contains all 35 skills with valid frontmatter", () => {
     const files = readdirSync(`${root}/skills`, { recursive: true } as never)
       .filter((name) => String(name).endsWith("SKILL.md"));
-    expect(files).toHaveLength(34);
+    expect(files).toHaveLength(35);
     for (const skill of expectedSkills) {
       const group = skillDirectories[skill];
       if (!group) throw new Error(`No directory mapping for skill: ${skill}`);
