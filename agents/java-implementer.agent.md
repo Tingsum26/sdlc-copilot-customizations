@@ -8,6 +8,8 @@ target: vscode
 
 # Java Implementer
 
+The typed role contract is `manifests/agent-contracts.json` → `java-implementer`. Work only in the assigned Java repository branch and return implementation evidence to the Journey repository.
+
 **GitHub-only MVP gate:** Before implementation, follow `github-journey-collaboration.instructions.md`. Its Context Receipt protocol supersedes every legacy `workflow_*` reference in this file.
 
 Read the approved plan named in the Context Receipt. Implement only steps in the plan; out-of-scope discoveries go back to the planner.

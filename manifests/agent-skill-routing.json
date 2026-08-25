@@ -7,19 +7,19 @@
       "allowedSkills": ["advance-stage", "prepare-stage-context", "join-epic", "change-epic", "find-blockers", "check-release-readiness", "draft-jira-update"]
     },
     "epic-delivery-analyst": {
-      "requiredSkills": ["prepare-stage-context", "analyze-code-context", "analyze-epic-risk"],
+      "requiredSkills": ["prepare-stage-context", "analyze-code-context", "impact-analysis", "analyze-epic-risk"],
       "allowedSkills": ["join-epic", "change-epic"]
     },
     "code-context-analyst": {
-      "requiredSkills": ["prepare-stage-context", "analyze-code-context", "analyze-http-call-graph"],
+      "requiredSkills": ["prepare-stage-context", "analyze-code-context", "impact-analysis", "analyze-http-call-graph"],
       "allowedSkills": ["onboard-repository", "onboard-journey"]
     },
     "requirement-analyst": {
-      "requiredSkills": ["prepare-stage-context", "start-ticket", "grill-requirement"],
+      "requiredSkills": ["prepare-stage-context", "start-ticket", "grill-requirement", "impact-analysis"],
       "allowedSkills": ["analyze-code-context", "assess-api-compatibility"]
     },
     "solution-architect": {
-      "requiredSkills": ["prepare-stage-context", "design-solution", "assess-api-compatibility"],
+      "requiredSkills": ["prepare-stage-context", "design-solution", "assess-api-compatibility", "design-review"],
       "allowedSkills": ["adr"]
     },
     "planner": {
@@ -27,23 +27,23 @@
       "allowedSkills": ["adr"]
     },
     "java-implementer": {
-      "requiredSkills": ["prepare-stage-context", "implement-task", "java-development"],
+      "requiredSkills": ["prepare-stage-context", "implement-task", "java-development", "verification-loop"],
       "allowedSkills": ["generate-tests", "assess-api-compatibility"]
     },
     "web-implementer": {
-      "requiredSkills": ["prepare-stage-context", "implement-task", "web-development"],
+      "requiredSkills": ["prepare-stage-context", "implement-task", "web-development", "verification-loop"],
       "allowedSkills": ["generate-tests", "review-accessibility", "review-analytics-tagging"]
     },
     "ios-implementer": {
-      "requiredSkills": ["prepare-stage-context", "implement-task", "ios-development"],
+      "requiredSkills": ["prepare-stage-context", "implement-task", "ios-development", "verification-loop"],
       "allowedSkills": ["generate-tests", "review-accessibility"]
     },
     "android-implementer": {
-      "requiredSkills": ["prepare-stage-context", "implement-task", "android-development"],
+      "requiredSkills": ["prepare-stage-context", "implement-task", "android-development", "verification-loop"],
       "allowedSkills": ["generate-tests", "review-accessibility"]
     },
     "test-designer": {
-      "requiredSkills": ["prepare-stage-context", "generate-tests", "plan-manual-e2e"],
+      "requiredSkills": ["prepare-stage-context", "generate-tests", "contract-test-matrix", "plan-manual-e2e"],
       "allowedSkills": ["record-manual-e2e", "review-accessibility", "review-analytics-tagging"]
     },
     "accessibility-qa": {
@@ -51,8 +51,8 @@
       "allowedSkills": ["record-manual-e2e"]
     },
     "pr-reviewer": {
-      "requiredSkills": ["prepare-stage-context", "review-pr"],
-      "allowedSkills": ["assess-api-compatibility", "review-accessibility", "review-analytics-tagging"]
+      "requiredSkills": ["prepare-stage-context", "review-pr", "review-loop"],
+      "allowedSkills": ["assess-api-compatibility", "review-accessibility", "review-analytics-tagging", "design-review"]
     }
   },
   "rules": {

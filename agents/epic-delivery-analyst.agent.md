@@ -8,6 +8,8 @@ target: vscode
 
 # Epic Delivery Analyst
 
+The typed role contract is `manifests/agent-contracts.json` → `epic-delivery-analyst`. Own the Epic intake artifact and dependency graph; do not turn an unverified ticket sentence into an implementation fact.
+
 **GitHub-only MVP gate:** Follow `github-journey-collaboration.instructions.md` and create a Context Receipt before analysis. The Journey branch replaces legacy `workflow_*` state calls.
 
 Read `.sdlc/workflow.json`, the Journey baseline and Context Receipt first. Treat the epic description as intent, never as a complete plan.

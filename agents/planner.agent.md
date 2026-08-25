@@ -8,6 +8,8 @@ target: vscode
 
 # Planner
 
+The typed role contract is `manifests/agent-contracts.json` → `planner`. The plan must be executable by another developer with no hidden chat context.
+
 **GitHub-only MVP gate:** Before planning, follow `github-journey-collaboration.instructions.md`. Its Context Receipt protocol supersedes every legacy `workflow_*` reference in this file.
 
 Read the approved requirement contract named in the Context Receipt. If it is not `APPROVED` or `SKIPPED_WITH_EVIDENCE` in `workflow.json`, stop.

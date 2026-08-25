@@ -18,15 +18,17 @@ const skillDirectories: Record<string, string> = {
   "start-epic": "workflow", "initialize-journey-workspace": "workflow", "advance-stage": "workflow", "join-epic": "workflow", "change-epic": "workflow",
   "start-ticket": "workflow", "resume-workflow": "workflow", "prepare-stage-context": "workflow", "import-pod-members": "workflow",
   "analyze-code-context": "analysis", "grill-requirement": "analysis", "assess-api-compatibility": "analysis",
-  "design-solution": "design", "plan-change": "design", "adr": "design",
-  "implement-task": "implement", "java-development": "implement", "web-development": "implement",
+  "impact-analysis": "analysis",
+  "design-solution": "design", "design-review": "design", "plan-change": "design", "adr": "design",
+  "implement-task": "implement", "verification-loop": "implement", "java-development": "implement", "web-development": "implement",
   "ios-development": "implement", "android-development": "implement",
-  "generate-tests": "test", "plan-manual-e2e": "test", "record-manual-e2e": "test",
+  "generate-tests": "test", "contract-test-matrix": "test", "plan-manual-e2e": "test", "record-manual-e2e": "test",
   "review-accessibility": "test", "review-analytics-tagging": "test",
-  "prepare-pr": "review", "review-pr": "review",
+  "prepare-pr": "review", "review-pr": "review", "review-loop": "review",
   "onboard-repository": "onboard", "onboard-journey": "onboard", "sync-onboarding": "onboard", "analyze-http-call-graph": "onboard",
   "analyze-epic-risk": "sm", "prepare-standup": "sm", "find-blockers": "sm",
   "check-release-readiness": "sm", "draft-jira-update": "sm",
+  "customization-audit": "meta",
 };
 const expectedSkills = Object.keys(skillDirectories);
 
@@ -62,21 +64,36 @@ describe("central catalog", () => {
     }
   });
 
+  it("keeps typed Agent contracts and Skill routes synchronized", () => {
+    const contracts = JSON.parse(readFileSync(resolve(root, "manifests/agent-contracts.json"), "utf8"));
+    const routing = JSON.parse(readFileSync(resolve(root, "manifests/agent-skill-routing.json"), "utf8"));
+    for (const agent of expectedAgents) {
+      expect(contracts.agents[agent], agent).toBeTruthy();
+      const route = routing.agents[agent];
+      expect(route, agent).toBeTruthy();
+      for (const skill of [...route.requiredSkills, ...route.allowedSkills]) {
+        expect(expectedSkills, `${agent} -> ${skill}`).toContain(skill);
+      }
+    }
+  });
+
   it("manifest counts match the catalog", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.agents).toBe(13);
-    expect(manifest.skills).toBe(36);
-    expect(manifest.instructions).toBe(20);
+    expect(manifest.skills).toBe(42);
+    expect(manifest.instructions).toBe(23);
     expect(manifest.policies).toBe(16);
     expect(manifest.templates).toBe(22);
     expect(existsSync(`${root}/${manifest.referencesFile}`)).toBe(true);
     expect(manifest.agentSkillRouting).toBe("manifests/agent-skill-routing.json");
+    expect(manifest.agentContracts).toBe("manifests/agent-contracts.json");
+    expect(existsSync(resolve(root, manifest.agentContracts))).toBe(true);
   });
 
-  it("contains all 36 skills with valid frontmatter", () => {
+  it("contains all 42 skills with valid frontmatter", () => {
     const files = readdirSync(`${root}/skills`, { recursive: true } as never)
       .filter((name) => String(name).endsWith("SKILL.md"));
-    expect(files).toHaveLength(36);
+    expect(files).toHaveLength(42);
     for (const skill of expectedSkills) {
       const group = skillDirectories[skill];
       if (!group) throw new Error(`No directory mapping for skill: ${skill}`);

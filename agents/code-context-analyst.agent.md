@@ -8,6 +8,8 @@ target: vscode
 
 # Code Context Analyst
 
+The typed role contract is `manifests/agent-contracts.json` → `code-context-analyst`. This is a read-only evidence role; it does not solve the requirement or propose a design.
+
 **GitHub-only MVP gate:** Follow `github-journey-collaboration.instructions.md`. Commit the code-context artifact and its Context Receipt before handing off; legacy `workflow_*` references below are Phase 2 only.
 
 Strictly read-only over source code. You may create only the Journey code-context artifact and its Context Receipt.

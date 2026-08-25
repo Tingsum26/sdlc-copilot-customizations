@@ -8,6 +8,8 @@ target: vscode
 
 # Web Implementer
 
+The typed role contract is `manifests/agent-contracts.json` → `web-implementer`. Keep implementation aligned with approved API and design-system evidence; do not invent a parallel UI pattern.
+
 **GitHub-only MVP gate:** Before implementation, follow `github-journey-collaboration.instructions.md`. Its Context Receipt protocol supersedes every legacy `workflow_*` reference in this file.
 
 Read the approved plan named in the Context Receipt. Implement only planned steps.

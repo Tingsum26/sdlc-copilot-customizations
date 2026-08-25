@@ -29,6 +29,7 @@ See:
 - `scripts/advance-journey-stage.mjs`
 - `scripts/verify-journey-artifact.mjs`
 - `manifests/agent-skill-routing.json`
+- `manifests/agent-contracts.json`
 
 Copy the templates and scripts into each private Journey repository. Install
 only the optional local MCP connectors actually needed by that Journey (Jira,
@@ -53,13 +54,13 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 | Directory      | Count | Description                                            |
 |----------------|-------|--------------------------------------------------------|
 | `agents/`      | 13    | `.agent.md` role definitions (planner, implementers, …) |
-| `skills/`      | 36    | `SKILL.md` files organized by lifecycle phase           |
-| `instructions/`| 19    | Per-domain instruction sets                            |
+| `skills/`      | 42    | `SKILL.md` files organized by lifecycle phase           |
+| `instructions/`| 23    | Shared operating, context, quality and domain rules   |
 | `policies/`    | 15    | Machine-readable policy JSON (+ `README.md` vocabulary) |
 | `templates/`   | 20    | Reusable artifact templates                            |
 | `evals/`       | 4     | Behavior, RED/GREEN, and skill-contract eval scenarios |
 | `hooks/`       | 2     | Hook manifest + local `run-hook.mjs` runner            |
-| `manifests/`   | 1     | `bundle-manifest.json`                                 |
+| `manifests/`   | 2     | Bundle inventory, routing and typed Agent contracts    |
 | `mcp/`         | 2     | MCP server catalog + role profiles                     |
 
 The historical Workflow-Service-oriented files remain as a Phase 2 reference.

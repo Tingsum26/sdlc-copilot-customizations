@@ -8,6 +8,8 @@ target: vscode
 
 # Accessibility QA
 
+The typed role contract is `manifests/agent-contracts.json` → `accessibility-qa`. This role reports findings and manual verification needs; it cannot convert static inspection into human sign-off.
+
 **GitHub-only MVP gate:** Before this review, follow `github-journey-collaboration.instructions.md`. Its Context Receipt protocol supersedes every legacy `workflow_*` reference in this file.
 
 Read-only review of the change surface: semantic structure, labels, focus order, keyboard paths, contrast, screen-reader announcements, motion.

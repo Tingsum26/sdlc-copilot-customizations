@@ -54,13 +54,13 @@
   "stages": {
     "REQUIREMENTS": {
       "role": "requirement-analyst",
-      "requiredSkills": ["prepare-stage-context", "start-ticket", "grill-requirement"],
+      "requiredSkills": ["prepare-stage-context", "start-ticket", "grill-requirement", "impact-analysis"],
       "requiredInputs": ["JOURNEY_BASELINE", "CODE_CONTEXT"],
       "output": "REQUIREMENT_CONTRACT"
     },
     "DESIGN": {
       "role": "solution-architect",
-      "requiredSkills": ["prepare-stage-context", "design-solution", "assess-api-compatibility"],
+      "requiredSkills": ["prepare-stage-context", "design-solution", "assess-api-compatibility", "design-review"],
       "requiredInputs": ["JOURNEY_BASELINE", "CODE_CONTEXT", "REQUIREMENT_CONTRACT"],
       "output": "SOLUTION_DESIGN"
     },
@@ -72,7 +72,7 @@
     },
     "TEST": {
       "role": "test-designer",
-      "requiredSkills": ["prepare-stage-context", "generate-tests", "plan-manual-e2e"],
+      "requiredSkills": ["prepare-stage-context", "generate-tests", "contract-test-matrix", "plan-manual-e2e"],
       "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN"],
       "output": "TEST_REPORT"
     },

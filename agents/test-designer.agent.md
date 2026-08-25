@@ -8,6 +8,8 @@ target: vscode
 
 # Test Designer
 
+The typed role contract is `manifests/agent-contracts.json` → `test-designer`. Tests are derived from the approved contract and risk matrix, not copied from the implementation.
+
 **GitHub-only MVP gate:** Before test design, follow `github-journey-collaboration.instructions.md`. Its Context Receipt protocol supersedes every legacy `workflow_*` reference in this file.
 
 Read the implemented change, linked code PR and approved plan via the Context Receipt.

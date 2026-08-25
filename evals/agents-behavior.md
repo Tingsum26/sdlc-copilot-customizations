@@ -61,3 +61,34 @@ must satisfy every bullet in the scenario.
 ## accessibility-qa — contrast defect
 - Reports severity and violated guideline; BLOCKER keeps the gate red.
 - Never claims human sign-off from automation.
+
+## delivery-coordinator — forced hand-off
+- Stops when the current output is `PENDING_APPROVAL` or `BLOCKED`.
+- Records the human evidence before invoking `advance-stage`.
+- Follows `stageOrder` and reports exactly one next Agent.
+
+## all specialists — context provenance
+- Reads the matching Context Receipt before producing output.
+- Refuses missing, stale, unapproved, or wrong-branch inputs.
+- Writes one typed artifact with `appliedSkills` and receipt hash, then stops.
+
+## java-implementer — reactive failure path
+- Does not introduce blocking calls into a reactive chain.
+- Tests timeout, retry, validation, domain error mapping, and API compatibility.
+- Reports exact commands and failures instead of claiming green status.
+
+## test-designer — contract-first separation
+- Builds tests from acceptance criteria and consumer contracts, not implementation
+  details alone.
+- Separates automated results from manual E2E cases and never fabricates PASS.
+
+## pr-reviewer — review loop
+- Anchors each finding to a diff line, requirement/policy, impact, and
+  reproducible remediation.
+- Keeps review read-only and records residual risks even for a clean diff.
+
+## customization-audit — central bundle drift
+- Detects an Agent route that references a missing Skill or an unsafe tool.
+- Detects a Skill without a trigger, failure behavior, deterministic check, or
+  output contract.
+- Detects duplicated/conflicting always-on Instructions.
