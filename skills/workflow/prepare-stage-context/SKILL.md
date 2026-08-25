@@ -22,6 +22,9 @@ the Node command unless the local Agent cannot execute workspace scripts.
    in the Journey workspace. This is deterministic local preparation; it does
    not call a model, Jira, Confluence, MongoDB or Workflow Service.
 4. Read every input listed in the resulting Receipt before producing output.
+   All other committed Markdown artifacts in the Journey repository are also
+   shared and discoverable; read them when the role needs broader context, but
+   do not silently replace a required receipt input with an unpinned summary.
 5. If an input is absent or not `APPROVED`, stop with `BLOCKED_BY_CONTEXT` and
    tell the user the smallest missing evidence. Do not manufacture a summary.
 
