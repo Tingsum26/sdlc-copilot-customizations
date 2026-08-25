@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "github-journey-workflow/v1",
+  "workflowId": "AO-123",
+  "journeyId": "account-opening",
+  "branch": "journey/AO-123-open-account",
+  "currentStage": "REQUIREMENTS",
+  "status": "IN_PROGRESS",
+  "sourceTickets": ["AO-123"],
+  "affectedRepositories": [
+    { "name": "account-opening-api", "branch": "feature/AO-123-api", "pullRequest": null },
+    { "name": "account-opening-web", "branch": "feature/AO-123-web", "pullRequest": null }
+  ],
+  "artifacts": {
+    "JOURNEY_BASELINE": {
+      "path": "docs/01-context/journey-baseline.md",
+      "status": "APPROVED"
+    },
+    "CODE_CONTEXT": {
+      "path": "docs/01-context/code-context.md",
+      "status": "APPROVED"
+    },
+    "REQUIREMENT_CONTRACT": {
+      "path": "docs/02-requirements/requirement-contract.md",
+      "status": "DRAFT"
+    },
+    "SOLUTION_DESIGN": {
+      "path": "docs/03-design/solution-design.md",
+      "status": "DRAFT"
+    },
+    "IMPLEMENTATION_PLAN": {
+      "path": "docs/04-implementation/implementation-plan.md",
+      "status": "DRAFT"
+    },
+    "TEST_REPORT": {
+      "path": "docs/05-testing/test-report.md",
+      "status": "DRAFT"
+    },
+    "PR_REVIEW": {
+      "path": "docs/06-review/pr-review.md",
+      "status": "DRAFT"
+    }
+  },
+  "stages": {
+    "REQUIREMENTS": {
+      "role": "requirement-analyst",
+      "requiredInputs": ["JOURNEY_BASELINE", "CODE_CONTEXT"],
+      "output": "REQUIREMENT_CONTRACT"
+    },
+    "DESIGN": {
+      "role": "solution-architect",
+      "requiredInputs": ["JOURNEY_BASELINE", "CODE_CONTEXT", "REQUIREMENT_CONTRACT"],
+      "output": "SOLUTION_DESIGN"
+    },
+    "PLAN": {
+      "role": "planner",
+      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN"],
+      "output": "IMPLEMENTATION_PLAN"
+    },
+    "TEST": {
+      "role": "test-designer",
+      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN"],
+      "output": "TEST_REPORT"
+    },
+    "REVIEW": {
+      "role": "pr-reviewer",
+      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN", "TEST_REPORT"],
+      "output": "PR_REVIEW"
+    }
+  }
+}

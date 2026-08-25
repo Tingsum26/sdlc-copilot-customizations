@@ -1,21 +1,21 @@
 ---
 name: import-pod-members
-description: Use when a Pod member roster (CSV/JSON) must be validated and imported into the workflow service for assignment routing.
-version: "2.0"
+description: Use when a Pod member roster (CSV/JSON) must be validated and versioned for Journey routing without a workflow database.
+version: "2.1"
 ---
 
 # Import Pod Members
 
 ## When to use
-A roster file exists (see `assets/pod-members-template.csv`) and members must be imported without direct database access.
+A roster file exists (see `assets/pod-members-template.csv`) and Journey routing metadata must be updated without a workflow database.
 
 ## Procedure
 1. Read the CSV/JSON and map rows to the membership schema in `references/import-contract.md`.
 2. Validate locally: header, required fields, duplicate employee IDs, active rows, and unknown Pod IDs — stop on any failure with the failing row.
-3. Call `workflow_validate_pod_roster` (DRY_RUN). If it fails, report the server-side error and stop.
-4. Present a redacted preview (counts of add/update/no-change, not full personal data) and ask the human to confirm.
-5. Only after explicit confirmation call `workflow_import_pod_roster` with `confirmed: true`.
+3. Validate locally with the supplied schema/script and generate a redacted preview (counts of add/update/no-change, not full personal data).
+4. Ask the human to confirm the preview.
+5. Only after explicit confirmation commit the validated, access-controlled routing file to the private central configuration repository; record the commit SHA in the import report.
 6. Re-apply must be idempotent: re-read the current roster revision first.
 
 ## Output contract
-The saved roster revision plus an import report (added/updated/unchanged counts, no personal data). Never connect to MongoDB or Jira directly; never import without the human confirmation.
+The committed roster revision plus an import report (added/updated/unchanged counts, no personal data). Never connect to MongoDB or Jira directly; never import without the human confirmation.

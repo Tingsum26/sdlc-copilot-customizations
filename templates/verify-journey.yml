@@ -1,0 +1,28 @@
+name: Verify Journey collaboration contract
+
+on:
+  pull_request:
+    paths:
+      - '.sdlc/**'
+      - 'docs/**'
+      - 'scripts/prepare-journey-context.mjs'
+      - 'scripts/verify-journey-artifact.mjs'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify each changed Journey artifact
+        shell: bash
+        run: |
+          git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'docs/**/*.md' |
+            while IFS= read -r artifact; do
+              [ -z "$artifact" ] && continue
+              stage=$(sed -n 's/^stage: //p' "$artifact" | head -n 1)
+              [ -z "$stage" ] && continue
+              node scripts/verify-journey-artifact.mjs --stage "$stage" --artifact "$artifact"
+            done

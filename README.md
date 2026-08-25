@@ -5,6 +5,29 @@ platform. This repository contains the central Agents, Skills, Instructions,
 Policies, Templates, Hooks, Evals, Manifests, and MCP catalog used to drive a
 spec → plan → task workflow with GitHub Copilot agent mode in VS Code.
 
+## GitHub-only MVP mode
+
+The default MVP does **not** deploy Workflow Service, Workflow MCP, MongoDB,
+or a server-side agent. A Journey repository branch is the source of truth.
+Its `.sdlc/workflow.json`, versioned Markdown artifacts, Context Receipts and
+pull requests provide persistence, recovery and audit.
+
+Before any agent starts a stage it must run the deterministic context-pack
+script, read the pinned upstream artifacts, and put the receipt hash in its
+output. The PR workflow then validates that the receipt is current. See:
+
+- `instructions/github-journey-collaboration.instructions.md`
+- `templates/journey-workflow.json`
+- `templates/journey-artifact.md`
+- `templates/verify-journey.yml`
+- `scripts/prepare-journey-context.mjs`
+- `scripts/verify-journey-artifact.mjs`
+
+Copy the templates and scripts into each private Journey repository. Install
+only the optional local MCP connectors actually needed by that Journey (Jira,
+Confluence, GitHub Enterprise, Figma or code graph); none persist workflow
+state. `mcp/github-only-mvp-profile.json` is the selected MVP profile.
+
 > ⚠️ **Fictional data only.** Every name, ticket, repository, and principal in
 > this bundle is invented. Nothing here references real credentials, real
 > identifiers, or production systems.
@@ -32,7 +55,9 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 | `manifests/`   | 1     | `bundle-manifest.json`                                 |
 | `mcp/`         | 2     | MCP server catalog + role profiles                     |
 
-113 files total, byte-identical to the source `central/` subtree.
+The historical Workflow-Service-oriented files remain as a Phase 2 reference.
+The GitHub-only MVP additions intentionally supersede them at runtime; this is
+no longer a byte-identical subtree extraction.
 
 ## Known gap (partial catalog)
 

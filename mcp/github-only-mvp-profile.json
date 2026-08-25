@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "mode": "github-only-mvp",
+  "persistence": "Git branch, pull request, workflow.json, context receipts, and Markdown artifacts",
+  "requiredServers": [],
+  "optionalLocalServers": ["jira", "confluence", "github-enterprise", "figma-desktop", "code-graph"],
+  "forbiddenDependencies": ["workflow-service", "workflow-mcp", "mongodb", "server-agent"],
+  "ui": "VSIX reads the checked-out Journey workspace and GitHub PR/check state; it never creates an AI result itself."
+}

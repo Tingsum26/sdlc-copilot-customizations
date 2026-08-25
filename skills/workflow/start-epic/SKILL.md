@@ -1,7 +1,7 @@
 ---
 name: start-epic
 description: Use to create or activate an Epic workflow and attach its channel tickets before per-ticket analysis.
-version: "1.0"
+version: "1.1"
 ---
 
 # Start Epic
@@ -10,11 +10,11 @@ version: "1.0"
 An epic (Jira epic or manual emergency change) must enter the workflow.
 
 ## Procedure
-1. Call `workflow_epic_create` with the epic id, title, and journey.
-2. Call `workflow_epic_activate` with the returned version.
-3. Attach API/WEB/IOS/ANDROID tickets with `workflow_epic_attach_ticket`.
-4. For a manual emergency change, record reason, urgency, affected tickets, and actor before creating anything.
-5. Stop and hand off to the epic delivery analyst for intake.
+1. Create or check out `journey/<epic-or-change-id>-<slug>` in the Journey repository. Never use a channel name such as `api` alone as the shared branch.
+2. Copy `templates/journey-workflow.json` to `.sdlc/workflow.json`; set the Epic/change ID, Journey ID, source tickets, affected code repositories and their individual implementation branches.
+3. Commit the initial `JOURNEY_BASELINE` and `CODE_CONTEXT` artifacts. Attach API/WEB/IOS/ANDROID tickets in `sourceTickets` and link their code PRs under `affectedRepositories`.
+4. For a manual emergency change, create a distinct change ID and record reason, urgency, actor and affected tickets in a committed intake artifact before analysis.
+5. Open a Journey PR and hand off to the epic delivery analyst for intake. The branch and PR are the audit trail.
 
 ## Output contract
-An ACTIVE epic with its ticket matrix persisted and audit trail entries. Never create a duplicate epic; never invent ticket contents.
+A Journey branch and PR containing `workflow.json`, ticket matrix and baseline context. Never create a duplicate Epic/change branch; never invent ticket contents.

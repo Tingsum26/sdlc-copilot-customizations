@@ -65,9 +65,9 @@ describe("central catalog", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.agents).toBe(13);
     expect(manifest.skills).toBe(33);
-    expect(manifest.instructions).toBe(19);
-    expect(manifest.policies).toBe(15);
-    expect(manifest.templates).toBe(20);
+    expect(manifest.instructions).toBe(20);
+    expect(manifest.policies).toBe(16);
+    expect(manifest.templates).toBe(22);
     expect(existsSync(`${root}/${manifest.referencesFile}`)).toBe(true);
   });
 
@@ -114,7 +114,7 @@ describe("central catalog", () => {
   it("manifest counts include hooks and profiles", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.hooks).toBe(1);
-    expect(manifest.profiles).toBe(1);
+    expect(manifest.profiles).toBe(2);
   });
 
   it("declares hooks for deterministic lifecycle events only", () => {

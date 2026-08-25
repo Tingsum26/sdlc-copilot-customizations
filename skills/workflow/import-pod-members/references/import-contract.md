@@ -1,7 +1,8 @@
 # Pod Roster Import Contract
 
 Input source: a CSV or JSON roster file. The client converts CSV rows to the
-membership shape below before calling the Workflow MCP.
+membership shape below before a human-approved commit to the private central
+configuration repository.
 
 ## Membership shape (one row per member)
 
@@ -31,11 +32,11 @@ CSV template header: `employeeId,displayLabel,principalId,role,journeyId,active,
 }
 ```
 
-## Tool flow
+## GitHub-only MVP flow
 
-1. `workflow_validate_pod_roster` — DRY_RUN only; returns `{"valid": true, ...}` or an error naming the failing constraint (duplicate active employee, journey mismatch, duplicate membership id).
-2. Human confirms a redacted preview (added/updated/no-change counts, never personal data).
-3. `workflow_import_pod_roster` with `confirmed: true` and the CURRENT roster revision — re-read the revision before re-apply so imports stay idempotent.
+1. Run deterministic local validation: required fields, duplicate active employee, journey mismatch and duplicate membership ID must fail with the affected row number.
+2. Generate a redacted preview (added/updated/no-change counts, never personal data) and ask for confirmation.
+3. After confirmation, commit the roster at its expected revision; re-read the current revision before re-applying so imports remain idempotent.
 
 ## Rules
 
