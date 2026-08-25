@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "github-agent-skill-routing/v1",
+  "defaultAgent": "journey-coordinator",
+  "agents": {
+    "journey-coordinator": {
+      "requiredSkills": ["start-epic", "resume-workflow"],
+      "allowedSkills": ["join-epic", "change-epic", "find-blockers", "check-release-readiness", "draft-jira-update"]
+    },
+    "epic-delivery-analyst": {
+      "requiredSkills": ["analyze-code-context", "analyze-epic-risk"],
+      "allowedSkills": ["join-epic", "change-epic"]
+    },
+    "code-context-analyst": {
+      "requiredSkills": ["analyze-code-context", "analyze-http-call-graph"],
+      "allowedSkills": ["onboard-repository", "onboard-journey"]
+    },
+    "requirement-analyst": {
+      "requiredSkills": ["start-ticket", "grill-requirement"],
+      "allowedSkills": ["analyze-code-context", "assess-api-compatibility"]
+    },
+    "solution-architect": {
+      "requiredSkills": ["design-solution", "assess-api-compatibility"],
+      "allowedSkills": ["adr"]
+    },
+    "planner": {
+      "requiredSkills": ["plan-change"],
+      "allowedSkills": ["adr"]
+    },
+    "java-implementer": {
+      "requiredSkills": ["implement-task", "java-development"],
+      "allowedSkills": ["generate-tests", "assess-api-compatibility"]
+    },
+    "web-implementer": {
+      "requiredSkills": ["implement-task", "web-development"],
+      "allowedSkills": ["generate-tests", "review-accessibility", "review-analytics-tagging"]
+    },
+    "ios-implementer": {
+      "requiredSkills": ["implement-task", "ios-development"],
+      "allowedSkills": ["generate-tests", "review-accessibility"]
+    },
+    "android-implementer": {
+      "requiredSkills": ["implement-task", "android-development"],
+      "allowedSkills": ["generate-tests", "review-accessibility"]
+    },
+    "test-designer": {
+      "requiredSkills": ["generate-tests", "plan-manual-e2e"],
+      "allowedSkills": ["record-manual-e2e", "review-accessibility", "review-analytics-tagging"]
+    },
+    "accessibility-qa": {
+      "requiredSkills": ["review-accessibility", "review-analytics-tagging"],
+      "allowedSkills": ["record-manual-e2e"]
+    },
+    "pr-reviewer": {
+      "requiredSkills": ["review-pr"],
+      "allowedSkills": ["assess-api-compatibility", "review-accessibility", "review-analytics-tagging"]
+    }
+  },
+  "rules": {
+    "relationship": "many-to-many",
+    "userStartsAgent": true,
+    "agentMaySelectOnlyAllowedSkills": true,
+    "skillsAreNotModelAgents": true,
+    "evidenceField": "appliedSkills"
+  }
+}

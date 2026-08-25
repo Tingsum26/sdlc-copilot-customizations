@@ -11,6 +11,7 @@
   "hooks": 1,
   "profiles": 2,
   "referencesFile": "REFERENCES.md",
+  "agentSkillRouting": "manifests/agent-skill-routing.json",
   "compatibility": {
     "vscode": ">=1.100",
     "copilot": "chat-agent-mode",

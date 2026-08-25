@@ -40,6 +40,7 @@ const receipt = {
   stage: stageName,
   role,
   generatedAt: new Date().toISOString(),
+  requiredSkills: stage.requiredSkills ?? [],
   inputs,
 };
 const receiptPath = join(workspace, ".sdlc", "context-receipts", `${stageName.toLowerCase()}-${role}.json`);

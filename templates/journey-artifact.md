@@ -6,6 +6,7 @@ artifactId: <artifact-id>
 status: DRAFT
 contextReceipt: .sdlc/context-receipts/<stage>-<role>.json
 contextReceiptSha256: <sha256-of-receipt>
+appliedSkills: <required-skill-1>@<version>, <required-skill-2>@<version>
 ---
 
 # <Artifact title>

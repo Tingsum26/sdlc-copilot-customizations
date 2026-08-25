@@ -28,6 +28,10 @@ if (fields.workflowId !== state.workflowId || fields.stage !== stageName || fiel
   throw new Error(`${artifactPath} has a workflowId, stage, or role that does not match workflow.json`);
 }
 if (!fields.contextReceipt || !fields.contextReceiptSha256) throw new Error(`${artifactPath} lacks Context Receipt references`);
+const appliedSkills = (fields.appliedSkills ?? "").split(",").map((skill) => skill.trim().split("@")[0]).filter(Boolean);
+for (const requiredSkill of stage.requiredSkills ?? []) {
+  if (!appliedSkills.includes(requiredSkill)) throw new Error(`${artifactPath} does not declare required Skill ${requiredSkill}`);
+}
 const receiptPath = join(workspace, fields.contextReceipt);
 if (!existsSync(receiptPath)) throw new Error(`Missing Context Receipt ${fields.contextReceipt}`);
 const receiptRaw = readFileSync(receiptPath);
@@ -35,6 +39,9 @@ if (sha256(receiptRaw) !== fields.contextReceiptSha256) throw new Error("Context
 const receipt = JSON.parse(receiptRaw);
 if (receipt.workflowId !== state.workflowId || receipt.stage !== stageName || receipt.role !== stage.role) {
   throw new Error("Context Receipt does not belong to this workflow stage and role");
+}
+if (JSON.stringify(receipt.requiredSkills ?? []) !== JSON.stringify(stage.requiredSkills ?? [])) {
+  throw new Error("Context Receipt skill route does not match workflow.json");
 }
 const expectedInputs = stage.requiredInputs;
 if (JSON.stringify(receipt.inputs.map(({ artifactId }) => artifactId)) !== JSON.stringify(expectedInputs)) {

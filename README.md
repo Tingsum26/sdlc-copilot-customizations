@@ -22,6 +22,7 @@ output. The PR workflow then validates that the receipt is current. See:
 - `templates/verify-journey.yml`
 - `scripts/prepare-journey-context.mjs`
 - `scripts/verify-journey-artifact.mjs`
+- `manifests/agent-skill-routing.json`
 
 Copy the templates and scripts into each private Journey repository. Install
 only the optional local MCP connectors actually needed by that Journey (Jira,

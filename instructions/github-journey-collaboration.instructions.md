@@ -15,13 +15,14 @@ Before performing any role-specific work:
    `.sdlc/workflow.json`.
 2. Run `node scripts/prepare-journey-context.mjs --stage <STAGE> --role <ROLE>`.
    It creates a pinned Context Receipt containing the exact upstream artifacts
-   and their SHA-256 hashes.
+   and their SHA-256 hashes, plus the stage's required Skill route.
 3. Read every artifact listed in that receipt. If the command fails, an input
    is missing, or an input is not approved where approval is required, stop.
    Report `BLOCKED_BY_CONTEXT`; do not create a substitute artifact from chat
    history or assumptions.
 4. Create only the output owned by your stage. Its front matter must contain
-   the Context Receipt path and its SHA-256. Run
+   the Context Receipt path, its SHA-256, and an `appliedSkills` list matching
+   the route. Run
    `node scripts/verify-journey-artifact.mjs --stage <STAGE> --artifact <PATH>`
    before asking for a PR or a human approval.
 

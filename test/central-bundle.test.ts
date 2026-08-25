@@ -38,6 +38,7 @@ describe("central customization bundle", () => {
       "mcp/catalog.json",
       "evals/agents-behavior.md",
     ]) expect(existsSync(resolve(root, path)), path).toBe(true);
+    expect(existsSync(resolve(root, "manifests/agent-skill-routing.json"))).toBe(true);
   });
 
   it("publishes a versioned, non-secret inventory for VSIX installation", () => {
@@ -69,6 +70,7 @@ describe("central catalog", () => {
     expect(manifest.policies).toBe(16);
     expect(manifest.templates).toBe(22);
     expect(existsSync(`${root}/${manifest.referencesFile}`)).toBe(true);
+    expect(manifest.agentSkillRouting).toBe("manifests/agent-skill-routing.json");
   });
 
   it("contains all 33 skills with valid frontmatter", () => {

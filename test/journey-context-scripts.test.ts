@@ -31,7 +31,7 @@ describe("GitHub Journey Context Receipt scripts", () => {
       expect(created.status, created.stderr).toBe(0);
       const receiptPath = join(workspace, ".sdlc", "context-receipts", "requirements-requirement-analyst.json");
       const receiptHash = createHash("sha256").update(readFileSync(receiptPath)).digest("hex");
-      writeFileSync(join(workspace, "docs", "02-requirements", "contract.md"), `---\nworkflowId: AO-123\nstage: REQUIREMENTS\nrole: requirement-analyst\ncontextReceipt: .sdlc/context-receipts/requirements-requirement-analyst.json\ncontextReceiptSha256: ${receiptHash}\n---\n# Contract\n`);
+      writeFileSync(join(workspace, "docs", "02-requirements", "contract.md"), `---\nworkflowId: AO-123\nstage: REQUIREMENTS\nrole: requirement-analyst\nappliedSkills: start-ticket@1.0, grill-requirement@1.0\ncontextReceipt: .sdlc/context-receipts/requirements-requirement-analyst.json\ncontextReceiptSha256: ${receiptHash}\n---\n# Contract\n`);
       const valid = spawnSync(node, [verify, "--workspace", workspace, "--stage", "REQUIREMENTS", "--artifact", "docs/02-requirements/contract.md"], { encoding: "utf8" });
       expect(valid.status, valid.stderr).toBe(0);
       writeFileSync(join(workspace, "docs", "01-context", "baseline.md"), "changed baseline\n");
