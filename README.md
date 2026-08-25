@@ -72,7 +72,7 @@ no longer a byte-identical subtree extraction.
 ## Known gap (partial catalog)
 
 This bundle is a **PARTIAL** extraction. The fully approved central catalog
-records more than the 13 Agents / 36 Skills / 19 Instructions present here;
+records more than the 13 Agents / 42 Skills / 23 Instructions present here;
 the remaining entries have not yet been split out of the platform monorepo and
 are not included in this repository. Treat the inventory above as the subset
 that is currently published, not the complete approved catalog.
