@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "sdlc-report-render/v1",
+  "reportTypes": {
+    "requirements": { "label": "Requirements", "sections": ["summary", "scope", "surface-map", "acceptance", "unknowns", "evidence"] },
+    "surface-map": { "label": "Page / API Surface Map", "sections": ["journey-flow", "page-api-table", "payload-table", "flags", "evidence"] },
+    "design": { "label": "Solution Design", "sections": ["summary", "boundaries", "sequence", "compatibility", "rollout", "rollback", "risks"] },
+    "plan": { "label": "Implementation Plan", "sections": ["waves", "repo-tasks", "acceptance", "rollback", "handoff"] },
+    "testing": { "label": "Test Report", "sections": ["coverage-matrix", "automation", "manual-e2e", "accessibility", "gaps"] },
+    "review": { "label": "PR Review", "sections": ["findings", "evidence", "residual-risks", "disposition"] }
+  },
+  "renderRules": {
+    "markdown": "safe-escaped Markdown with tables, links, headings and code blocks",
+    "mermaid": "display as a safe source block in MVP; graphical rendering is a later trusted offline enhancement",
+    "frontMatter": "render as a metadata summary, never as untrusted HTML",
+    "refresh": "watch the artifact path and workflow.json; update without model calls"
+  }
+}
