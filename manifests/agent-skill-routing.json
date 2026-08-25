@@ -1,8 +1,8 @@
 {
   "schemaVersion": "github-agent-skill-routing/v1",
-  "defaultAgent": "journey-coordinator",
+  "defaultAgent": "delivery-coordinator",
   "agents": {
-    "journey-coordinator": {
+    "delivery-coordinator": {
       "requiredSkills": ["start-epic", "resume-workflow"],
       "allowedSkills": ["join-epic", "change-epic", "find-blockers", "check-release-readiness", "draft-jira-update"]
     },
