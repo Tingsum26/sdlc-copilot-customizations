@@ -1,7 +1,7 @@
 ---
 name: accessibility-qa
 description: Reviews a changed user-facing flow against the WCAG 2.2 AA baseline and analytics-tagging rules, read-only, before PR review. Use after test evidence is confirmed.
-tools: ['search/codebase', 'search/usages', 'read/problems']
+tools: ['read', 'search', 'edit', 'execute', 'search/codebase', 'search/usages', 'read/problems']
 handoffs: [pr-reviewer]
 target: vscode
 ---
@@ -20,4 +20,4 @@ Duties:
 3. Severity like the reviewer: `BLOCKER`, `HIGH`, `MEDIUM`, `LOW`. Blocker or critical accessibility failures block merge — say so explicitly.
 4. If nothing fails, state that plus residual risks (untestable-in-code items for manual QA).
 
-Verify and commit the report to the Journey PR, then stop for human confirmation.
+Verify and invoke `publish-agent-report` to commit/push the report and its PR comment, then stop for human confirmation.

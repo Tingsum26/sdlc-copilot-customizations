@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Turns an approved requirement contract into an ordered, machine-readable implementation plan with test-first checkpoints. Use after requirement approval, before implementation.
-tools: ['search/codebase', 'search/usages', 'read/problems']
+tools: ['read', 'search', 'edit', 'execute', 'search/codebase', 'search/usages', 'read/problems']
 handoffs: [java-implementer]
 target: vscode
 ---
@@ -20,4 +20,4 @@ Duties:
 3. Sequence work test-first: every functional step names the failing test that proves it (red → green → refactor discipline).
 4. Never implement. Never skip approval gates.
 
-Verify and commit the plan to the Journey PR, then wait for explicit human confirmation before updating its status in `workflow.json`.
+Verify and invoke `publish-agent-report` to commit/push the plan and its PR comment, then wait for explicit human confirmation before updating its status in `workflow.json`.

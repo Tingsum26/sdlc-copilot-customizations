@@ -4,54 +4,54 @@
   "agents": {
     "delivery-coordinator": {
       "requiredSkills": ["initialize-journey-workspace", "start-epic", "resume-workflow"],
-      "allowedSkills": ["advance-stage", "prepare-stage-context", "join-epic", "change-epic", "find-blockers", "check-release-readiness", "draft-jira-update"]
+      "allowedSkills": ["advance-stage", "prepare-stage-context", "join-epic", "change-epic", "find-blockers", "check-release-readiness", "draft-jira-update", "publish-agent-report"]
     },
     "epic-delivery-analyst": {
       "requiredSkills": ["prepare-stage-context", "analyze-code-context", "impact-analysis", "analyze-epic-risk"],
-      "allowedSkills": ["join-epic", "change-epic"]
+      "allowedSkills": ["join-epic", "change-epic", "publish-agent-report"]
     },
     "code-context-analyst": {
       "requiredSkills": ["prepare-stage-context", "analyze-code-context", "impact-analysis", "analyze-http-call-graph"],
-      "allowedSkills": ["onboard-repository", "onboard-journey"]
+      "allowedSkills": ["onboard-repository", "onboard-journey", "publish-agent-report"]
     },
     "requirement-analyst": {
-      "requiredSkills": ["prepare-stage-context", "start-ticket", "grill-requirement", "impact-analysis"],
+      "requiredSkills": ["prepare-stage-context", "start-ticket", "grill-requirement", "impact-analysis", "publish-agent-report"],
       "allowedSkills": ["analyze-code-context", "assess-api-compatibility"]
     },
     "solution-architect": {
-      "requiredSkills": ["prepare-stage-context", "design-solution", "assess-api-compatibility", "design-review"],
+      "requiredSkills": ["prepare-stage-context", "design-solution", "assess-api-compatibility", "design-review", "publish-agent-report"],
       "allowedSkills": ["adr"]
     },
     "planner": {
-      "requiredSkills": ["prepare-stage-context", "plan-change"],
+      "requiredSkills": ["prepare-stage-context", "plan-change", "publish-agent-report"],
       "allowedSkills": ["adr"]
     },
     "java-implementer": {
       "requiredSkills": ["prepare-stage-context", "implement-task", "java-development", "verification-loop"],
-      "allowedSkills": ["generate-tests", "assess-api-compatibility"]
+      "allowedSkills": ["generate-tests", "assess-api-compatibility", "publish-agent-report"]
     },
     "web-implementer": {
       "requiredSkills": ["prepare-stage-context", "implement-task", "web-development", "verification-loop"],
-      "allowedSkills": ["generate-tests", "review-accessibility", "review-analytics-tagging"]
+      "allowedSkills": ["generate-tests", "review-accessibility", "review-analytics-tagging", "publish-agent-report"]
     },
     "ios-implementer": {
       "requiredSkills": ["prepare-stage-context", "implement-task", "ios-development", "verification-loop"],
-      "allowedSkills": ["generate-tests", "review-accessibility"]
+      "allowedSkills": ["generate-tests", "review-accessibility", "publish-agent-report"]
     },
     "android-implementer": {
       "requiredSkills": ["prepare-stage-context", "implement-task", "android-development", "verification-loop"],
-      "allowedSkills": ["generate-tests", "review-accessibility"]
+      "allowedSkills": ["generate-tests", "review-accessibility", "publish-agent-report"]
     },
     "test-designer": {
-      "requiredSkills": ["prepare-stage-context", "generate-tests", "contract-test-matrix", "plan-manual-e2e"],
+      "requiredSkills": ["prepare-stage-context", "generate-tests", "contract-test-matrix", "plan-manual-e2e", "publish-agent-report"],
       "allowedSkills": ["record-manual-e2e", "review-accessibility", "review-analytics-tagging"]
     },
     "accessibility-qa": {
       "requiredSkills": ["prepare-stage-context", "review-accessibility", "review-analytics-tagging"],
-      "allowedSkills": ["record-manual-e2e"]
+      "allowedSkills": ["record-manual-e2e", "publish-agent-report"]
     },
     "pr-reviewer": {
-      "requiredSkills": ["prepare-stage-context", "review-pr", "review-loop"],
+      "requiredSkills": ["prepare-stage-context", "review-pr", "review-loop", "publish-agent-report"],
       "allowedSkills": ["assess-api-compatibility", "review-accessibility", "review-analytics-tagging", "design-review"]
     }
   },

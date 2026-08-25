@@ -16,7 +16,7 @@ const expectedAgents = [
 ];
 const skillDirectories: Record<string, string> = {
   "start-epic": "workflow", "initialize-journey-workspace": "workflow", "advance-stage": "workflow", "join-epic": "workflow", "change-epic": "workflow",
-  "start-ticket": "workflow", "resume-workflow": "workflow", "prepare-stage-context": "workflow", "import-pod-members": "workflow",
+  "start-ticket": "workflow", "resume-workflow": "workflow", "prepare-stage-context": "workflow", "import-pod-members": "workflow", "publish-agent-report": "workflow",
   "analyze-code-context": "analysis", "grill-requirement": "analysis", "assess-api-compatibility": "analysis",
   "impact-analysis": "analysis",
   "design-solution": "design", "design-review": "design", "plan-change": "design", "adr": "design",
@@ -80,20 +80,20 @@ describe("central catalog", () => {
   it("manifest counts match the catalog", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.agents).toBe(13);
-    expect(manifest.skills).toBe(42);
+    expect(manifest.skills).toBe(43);
     expect(manifest.instructions).toBe(23);
     expect(manifest.policies).toBe(16);
-    expect(manifest.templates).toBe(24);
+    expect(manifest.templates).toBe(26);
     expect(existsSync(`${root}/${manifest.referencesFile}`)).toBe(true);
     expect(manifest.agentSkillRouting).toBe("manifests/agent-skill-routing.json");
     expect(manifest.agentContracts).toBe("manifests/agent-contracts.json");
     expect(existsSync(resolve(root, manifest.agentContracts))).toBe(true);
   });
 
-  it("contains all 42 skills with valid frontmatter", () => {
+  it("contains all 43 skills with valid frontmatter", () => {
     const files = readdirSync(`${root}/skills`, { recursive: true } as never)
       .filter((name) => String(name).endsWith("SKILL.md"));
-    expect(files).toHaveLength(42);
+    expect(files).toHaveLength(43);
     for (const skill of expectedSkills) {
       const group = skillDirectories[skill];
       if (!group) throw new Error(`No directory mapping for skill: ${skill}`);
@@ -164,5 +164,12 @@ describe("central catalog", () => {
   it("review-pr mandates residual risks in its output contract", () => {
     const content = readFileSync(`${root}/skills/review/review-pr/SKILL.md`, "utf8");
     expect(content).toMatch(/residual risks/i);
+  });
+
+  it("requires each sequential stage specialist to publish its verified Journey report", () => {
+    const routing = JSON.parse(readFileSync(resolve(root, "manifests/agent-skill-routing.json"), "utf8"));
+    for (const agent of ["requirement-analyst", "solution-architect", "planner", "test-designer", "pr-reviewer"]) {
+      expect(routing.agents[agent].requiredSkills, agent).toContain("publish-agent-report");
+    }
   });
 });

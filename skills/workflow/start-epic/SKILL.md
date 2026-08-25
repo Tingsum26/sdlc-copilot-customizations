@@ -15,7 +15,7 @@ An epic (Jira epic or manual emergency change) must enter the workflow.
 3. Copy `templates/journey-workflow.json` to `.sdlc/workflow.json`; set the Epic/change ID, Journey ID, source tickets, affected code repositories and their individual implementation branches.
 4. Commit the initial `JOURNEY_BASELINE` and `CODE_CONTEXT` artifacts. Attach API/WEB/IOS/ANDROID tickets in `sourceTickets` and link their code PRs under `affectedRepositories`.
 5. For a manual emergency change, create a distinct change ID and record reason, urgency, actor and affected tickets in a committed intake artifact before analysis.
-6. Open a Journey PR and hand off to the epic delivery analyst for intake. The branch and PR are the audit trail.
+6. Create the initial Journey PR through the approved local GitHub channel and hand off to the epic delivery analyst for intake. It contains the baseline/context commit; after a specialist creates a declared stage output, that specialist uses `publish-agent-report` to add the report comment. The branch and PR are the audit trail.
 
 ## Output contract
 A Journey branch and PR containing `workflow.json`, ticket matrix and baseline context. Never create a duplicate Epic/change branch; never invent ticket contents.

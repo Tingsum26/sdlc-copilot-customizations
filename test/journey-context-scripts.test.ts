@@ -10,6 +10,8 @@ const node = process.execPath;
 const prepare = join(root, "scripts", "prepare-journey-context.mjs");
 const verify = join(root, "scripts", "verify-journey-artifact.mjs");
 const advance = join(root, "scripts", "advance-journey-stage.mjs");
+const renderPr = join(root, "scripts", "render-agent-pr.mjs");
+const recordPr = join(root, "scripts", "record-journey-pr.mjs");
 
 describe("GitHub Journey Context Receipt scripts", () => {
   it("pins approved upstream artifacts and rejects a stale receipt", () => {
@@ -65,6 +67,39 @@ describe("GitHub Journey Context Receipt scripts", () => {
       const advanced = spawnSync(node, [advance, "--workspace", workspace, "--actor", "alice", "--evidence", "PR-1"], { encoding: "utf8" });
       expect(advanced.status, advanced.stderr).toBe(0);
       expect(JSON.parse(readFileSync(join(workspace, ".sdlc", "workflow.json"), "utf8")).currentStage).toBe("DESIGN");
+    } finally {
+      rmSync(workspace, { recursive: true, force: true });
+    }
+  });
+
+  it("renders a GitHub report card with the gated next Agent and persists the Journey PR reference", () => {
+    const workspace = mkdtempSync(join(tmpdir(), "journey-pr-card-"));
+    try {
+      mkdirSync(join(workspace, ".sdlc"), { recursive: true });
+      mkdirSync(join(workspace, "docs", "02-requirements"), { recursive: true });
+      const state = {
+        workflowId: "AO-123", journeyId: "account-opening", branch: "journey/AO-123-open-account", currentStage: "REQUIREMENTS",
+        journeyRepository: { status: "CONFIGURED", name: "journey-account-opening", remote: "https://github.example/journey-account-opening" },
+        stageOrder: ["REQUIREMENTS", "DESIGN"],
+        artifacts: { REQUIREMENT_CONTRACT: { path: "docs/02-requirements/requirement-contract.md", status: "PENDING_APPROVAL" } },
+        stages: { REQUIREMENTS: { role: "requirement-analyst", output: "REQUIREMENT_CONTRACT" }, DESIGN: { role: "solution-architect", output: "SOLUTION_DESIGN" } },
+      };
+      writeFileSync(join(workspace, ".sdlc", "workflow.json"), JSON.stringify(state));
+      writeFileSync(join(workspace, "docs", "02-requirements", "requirement-contract.md"), "---\nworkflowId: AO-123\nstage: REQUIREMENTS\nrole: requirement-analyst\ncontextReceipt: .sdlc/context-receipts/requirements-requirement-analyst.json\n---\n# Requirement Contract\n\n| API | Change |\n| --- | --- |\n| Open account | additive |\n");
+      const body = spawnSync(node, [renderPr, "--workspace", workspace, "--format", "body"], { encoding: "utf8" });
+      expect(body.status, body.stderr).toBe(0);
+      expect(body.stdout).toContain("Human review is required");
+      expect(body.stdout).toContain("solution-architect");
+      expect(body.stdout).toContain("/resume-workflow AO-123");
+      const comment = spawnSync(node, [renderPr, "--workspace", workspace, "--format", "comment"], { encoding: "utf8" });
+      expect(comment.status, comment.stderr).toBe(0);
+      expect(comment.stdout).toContain("sdlc-agent-report:AO-123:REQUIREMENT_CONTRACT");
+      expect(comment.stdout).toContain("Agent report content");
+      const recorded = spawnSync(node, [recordPr, "--workspace", workspace, "--number", "42", "--url", "https://github.example/org/journey/pull/42", "--base", "main", "--artifact-id", "REQUIREMENT_CONTRACT", "--comment-url", "https://github.example/org/journey/pull/42#issuecomment-100"], { encoding: "utf8" });
+      expect(recorded.status, recorded.stderr).toBe(0);
+      const persisted = JSON.parse(readFileSync(join(workspace, ".sdlc", "workflow.json"), "utf8"));
+      expect(persisted.journeyPullRequest.number).toBe(42);
+      expect(persisted.journeyPullRequest.reports.REQUIREMENT_CONTRACT.commentUrl).toContain("issuecomment-100");
     } finally {
       rmSync(workspace, { recursive: true, force: true });
     }

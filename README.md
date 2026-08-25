@@ -12,6 +12,12 @@ or a server-side agent. A Journey repository branch is the source of truth.
 Its `.sdlc/workflow.json`, versioned Markdown artifacts, Context Receipts and
 pull requests provide persistence, recovery and audit.
 
+GitHub Journey PRs are the required human workbench for MVP: every verified
+stage artifact is committed to the Journey branch, linked from the PR
+description and projected into a marked PR comment that states the required
+human decision, next Agent and `/resume-workflow` command. VSIX is an optional
+local companion, not a workflow dependency.
+
 Before any agent starts a stage, the Coordinator or specialist automatically
 invokes the internal `prepare-stage-context` Skill. It reads the pinned
 upstream artifacts and puts the receipt hash in its output; the user does not
@@ -26,10 +32,14 @@ See:
 - `templates/journey-artifact.md`
 - `templates/agent-report.md`
 - `templates/report-render-contract.json`
+- `templates/journey-agent-pr.md`
+- `templates/journey-agent-report-comment.md`
 - `templates/verify-journey.yml`
 - `scripts/prepare-journey-context.mjs`
 - `scripts/advance-journey-stage.mjs`
 - `scripts/verify-journey-artifact.mjs`
+- `scripts/render-agent-pr.mjs`
+- `scripts/record-journey-pr.mjs`
 - `manifests/agent-skill-routing.json`
 - `manifests/agent-contracts.json`
 
@@ -56,10 +66,10 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 | Directory      | Count | Description                                            |
 |----------------|-------|--------------------------------------------------------|
 | `agents/`      | 13    | `.agent.md` role definitions (planner, implementers, …) |
-| `skills/`      | 42    | `SKILL.md` files organized by lifecycle phase           |
+| `skills/`      | 43    | `SKILL.md` files organized by lifecycle phase           |
 | `instructions/`| 23    | Shared operating, context, quality and domain rules   |
 | `policies/`    | 15    | Machine-readable policy JSON (+ `README.md` vocabulary) |
-| `templates/`   | 24    | Reusable artifact and HTML report templates            |
+| `templates/`   | 26    | Reusable artifact and GitHub report templates          |
 | `evals/`       | 4     | Behavior, RED/GREEN, and skill-contract eval scenarios |
 | `hooks/`       | 2     | Hook manifest + local `run-hook.mjs` runner            |
 | `manifests/`   | 2     | Bundle inventory, routing and typed Agent contracts    |
@@ -72,7 +82,7 @@ no longer a byte-identical subtree extraction.
 ## Known gap (partial catalog)
 
 This bundle is a **PARTIAL** extraction. The fully approved central catalog
-records more than the 13 Agents / 42 Skills / 23 Instructions present here;
+records more than the 13 Agents / 43 Skills / 23 Instructions present here;
 the remaining entries have not yet been split out of the platform monorepo and
 are not included in this repository. Treat the inventory above as the subset
 that is currently published, not the complete approved catalog.

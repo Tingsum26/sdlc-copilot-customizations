@@ -24,12 +24,15 @@ describe("central Copilot customizations", () => {
   }
 
   for (const name of ["requirement-analyst", "solution-architect", "pr-reviewer"]) {
-    it(`${name} is a bounded agent definition`, () => {
+    it(`${name} has bounded local report-publication authority`, () => {
       const source = read(`agents/${name}.agent.md`);
       expect(source).toMatch(/^---\r?\nname:/);
       expect(source).toMatch(/tools:/);
       expect(source).toMatch(/GitHub-only|Context Receipt|workflow_/i);
-      expect(source).not.toMatch(/tools:.*(?:edit|terminal|execute|MongoDB)/i);
+      expect(source).toMatch(/tools:.*(?:read|search).*edit.*execute/i);
+      expect(source).toMatch(/publish-agent-report/i);
+      expect(source).toMatch(/protected branch|merge|approve/i);
+      expect(source).not.toMatch(/MongoDB/i);
     });
   }
 
@@ -38,6 +41,7 @@ describe("central Copilot customizations", () => {
     expect(source).toMatch(/read.only|只读/i);
     expect(source).toMatch(/evidence|证据/i);
     expect(source).toMatch(/severity|严重/i);
+    expect(source).toMatch(/only permitted mutation/i);
   });
 });
 

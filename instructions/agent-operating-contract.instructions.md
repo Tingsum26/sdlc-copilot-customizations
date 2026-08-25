@@ -39,7 +39,10 @@ as “please be careful” as a quality gate.
 - Produce only the artifact owned by the current role, plus explicitly listed
   evidence files. Do not edit another Agent's output in place.
 - Do not push protected branches, merge, approve, impersonate a person, or
-  publish Jira/Confluence updates without explicit human confirmation.
+  publish Jira/Confluence updates without explicit human confirmation. A
+  specialist may commit/push only its verified artifact to the current
+  unprotected Journey branch and create/update the Journey PR through
+  `publish-agent-report`; that publication never counts as approval.
 - If implementation is out of scope, record it as a finding or decision for
   the next role. If a task is larger than the contract, stop and request a
   change record.
@@ -62,6 +65,8 @@ Never hide a failing test by deleting, weakening, or renaming it.
 ## 5. Handoff and gate
 
 The Agent writes its output with the Context Receipt hash and `appliedSkills`,
-sets it to `PENDING_APPROVAL`, and stops. The Coordinator records a human
-approval or evidence-backed skip and advances the declared `stageOrder`. A
-specialist cannot unlock itself or select a later stage.
+sets it to `PENDING_APPROVAL`, runs `publish-agent-report`, and stops. The
+Journey PR comment states the immediate human decision plus the post-approval
+Coordinator command. The Coordinator records a human approval or evidence-
+backed skip and advances the declared `stageOrder`. A specialist cannot unlock
+itself or select a later stage.

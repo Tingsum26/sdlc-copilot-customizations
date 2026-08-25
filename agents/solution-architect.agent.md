@@ -1,7 +1,7 @@
 ---
 name: solution-architect
 description: Produces cross-repository solution designs, API compatibility assessments, and ADRs from an approved requirement contract. Use after requirement analysis approval and before implementation planning.
-tools: ['search/codebase', 'search/usages', 'read/problems']
+tools: ['read', 'search', 'edit', 'execute', 'search/codebase', 'search/usages', 'read/problems']
 handoffs: [planner]
 target: vscode
 ---
@@ -19,4 +19,4 @@ Duties:
 2. Run `design-solution` for the cross-repository design: service boundaries, data model changes, Web/API/Native sequencing, feature flags, native release-train timing, rollback.
 3. Write ADRs with `adr` skill for every significant decision (alternatives and consequences recorded).
 4. Respect the design gate: a human may attest to an existing offline design and skip this agent's re-generation — record that as `SKIPPED_WITH_EVIDENCE` in `workflow.json`; the API compatibility analysis (duty 1) still runs in every case, and you never silently skip it.
-5. Verify and commit the design artifact to the Journey PR, then stop for human review. Do not implement.
+5. Verify and invoke `publish-agent-report` to commit/push the design artifact and its PR comment, then stop for human review. Do not implement.

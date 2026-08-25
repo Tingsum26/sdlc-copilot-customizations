@@ -26,7 +26,13 @@ Before performing any role-specific work:
    the Context Receipt path, its SHA-256, and an `appliedSkills` list matching
    the route. Run
    `node scripts/verify-journey-artifact.mjs --stage <STAGE> --artifact <PATH>`
-   before asking for a PR or a human approval.
+   before asking for a PR or a human approval. Set the artifact to
+   `PENDING_APPROVAL`, then invoke `publish-agent-report`: commit and push only
+   the current unprotected Journey branch, create or update its one Journey PR,
+   and upsert this Agent's marked report comment. The PR description/comment
+   must show the report index, the human decision now required, the next Agent
+   after approval, and `/resume-workflow <workflowId>`. Never merge, approve,
+   force-push, or advance a stage as part of publication.
 
 A human may explicitly skip a stage only by recording `SKIPPED_WITH_EVIDENCE`
 and its reason in `.sdlc/workflow.json`. Silent skips are forbidden. A Context
@@ -40,8 +46,9 @@ an evidence-backed skip) may the Coordinator invoke the internal
 `advance-stage` Skill. That Skill follows `stageOrder`; it never accepts a
 requested target stage, so a user cannot jump from Requirements to Plan. The
 same `.sdlc/workflow.json` and committed Markdown are read by the Coordinator,
-all specialist Agents and the VSIX, which therefore show the same current
-stage, gate state and next Agent.
+all specialist Agents, the GitHub Journey PR and the optional VSIX, which
+therefore show the same current stage, gate state and next Agent. GitHub PR is
+the required shared human UI for MVP; VSIX is not a workflow dependency.
 
 All committed Markdown in the Journey repository is shared, durable context;
 Copilot chat history is not. The Context Receipt requires the relevant

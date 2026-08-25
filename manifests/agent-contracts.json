@@ -6,7 +6,8 @@
     "evidenceLevels": ["CODE_VERIFIED", "TEST_VERIFIED", "DOC_STATED", "AI_INFERRED", "UNRESOLVED"],
     "outputStates": ["DRAFT", "PENDING_APPROVAL", "APPROVED", "SKIPPED_WITH_EVIDENCE", "BLOCKED"],
     "stopOn": ["missing input", "stale receipt", "unresolved critical unknown", "scope conflict", "failed deterministic check"],
-    "never": ["invent business rules", "approve own work", "merge", "push protected branch", "claim an unexecuted tool result"]
+    "never": ["invent business rules", "approve own work", "merge", "push protected branch", "claim an unexecuted tool result"],
+    "reportPublication": "A specialist may publish only its verified artifact to the current unprotected Journey branch and one Journey PR; publication never advances or approves a stage."
   },
   "agents": {
     "delivery-coordinator": { "stage": "CONTROL", "inputs": ["workflow.json", "all artifact statuses", "PR/check metadata"], "outputs": ["resume summary", "routing decision", "standup/risk/release report"], "mustRun": ["initialize-journey-workspace", "resume-workflow", "advance-stage when approved"], "qualityGates": ["never start a blocked stage", "follow stageOrder", "record actor/evidence"], "mutates": ["workflow.json only through approved stage transition", "coordinator report"] },

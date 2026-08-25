@@ -9,9 +9,11 @@
     "review": { "label": "PR Review", "sections": ["findings", "evidence", "residual-risks", "disposition"] }
   },
   "renderRules": {
-    "markdown": "safe-escaped Markdown with tables, links, headings and code blocks",
-    "mermaid": "display as a safe source block in MVP; graphical rendering is a later trusted offline enhancement",
+    "github": "GitHub Journey PR is the required MVP collaboration UI; render committed Markdown, tables, diffs, task lists and supported Mermaid natively",
+    "markdown": "canonical committed Markdown with tables, links, headings and code blocks; PR description and report comment are projections, not the source of truth",
+    "mermaid": "render natively in GitHub when the enterprise version/configuration supports it; VSIX displays safe source blocks as its optional local fallback",
     "frontMatter": "render as a metadata summary, never as untrusted HTML",
-    "refresh": "watch the artifact path and workflow.json; update without model calls"
+    "refresh": "GitHub updates on push/PR reload; optional VSIX watches the artifact path and workflow.json without model calls",
+    "handoff": "every report PR comment states the human decision now required, the next Agent after approval, and /resume-workflow <workflowId>"
   }
 }

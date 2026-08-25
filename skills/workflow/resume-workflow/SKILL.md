@@ -18,9 +18,11 @@ The human asks to continue an epic/ticket after an interruption.
    or choose an arbitrary stage.
 3. Read the generated receipt and every pinned artifact; it is the frozen
    context package. Never restore state from chat history.
-4. State what was completed, what is stale or blocked, the next Agent and the
-   single next action before doing anything. All committed Journey Markdown is
-   shared output; the receipt identifies the mandatory upstream subset.
+4. State what was completed, what is stale or blocked, the immediate human
+   decision, the next Agent after approval, and the single next command before
+   doing anything. The Journey PR's latest report comment must mirror this as
+   `/resume-workflow <workflowId>`. All committed Journey Markdown is shared
+   output; the receipt identifies the mandatory upstream subset.
 5. Proceed only after the human confirms the next action.
 
 ## Output contract
