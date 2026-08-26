@@ -19,6 +19,9 @@ if (state.journeyRepository?.status !== "CONFIGURED" || !state.journeyRepository
 }
 const stage = state.stages?.[stageName];
 if (!stage) throw new Error(`Unknown stage ${stageName}`);
+if (stage.allowedRoles && !stage.allowedRoles.includes(stage.role)) {
+  throw new Error(`Stage ${stageName} has a role outside its allowedRoles list`);
+}
 if (stage.role !== role) throw new Error(`Stage ${stageName} belongs to ${stage.role}, not ${role}`);
 
 const acceptedStatuses = new Set(["APPROVED", "ACCEPTED", "CURRENT", "SKIPPED_WITH_EVIDENCE"]);

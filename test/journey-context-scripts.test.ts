@@ -10,6 +10,7 @@ const node = process.execPath;
 const prepare = join(root, "scripts", "prepare-journey-context.mjs");
 const verify = join(root, "scripts", "verify-journey-artifact.mjs");
 const advance = join(root, "scripts", "advance-journey-stage.mjs");
+const recordDecision = join(root, "scripts", "record-human-decision.mjs");
 const renderPr = join(root, "scripts", "render-agent-pr.mjs");
 const recordPr = join(root, "scripts", "record-journey-pr.mjs");
 const checkOnboarding = join(root, "scripts", "check-journey-onboarding.mjs");
@@ -29,14 +30,18 @@ describe("GitHub Journey Context Receipt scripts", () => {
         artifacts: {
           JOURNEY_BASELINE: { path: "docs/01-context/baseline.md", status: "APPROVED" },
           CODE_CONTEXT: { path: "docs/01-context/code-context.md", status: "APPROVED" },
+          REQUIREMENT_CONTRACT: { path: "docs/02-requirements/contract.md", status: "PENDING_APPROVAL" },
         },
-        stages: { REQUIREMENTS: { role: "requirement-analyst", requiredSkills: ["prepare-stage-context", "start-ticket", "grill-requirement"], requiredInputs: ["JOURNEY_BASELINE", "CODE_CONTEXT"] } },
+        stages: { REQUIREMENTS: { role: "requirement-analyst", requiredSkills: ["prepare-stage-context", "start-ticket", "grill-requirement"], requiredInputs: ["JOURNEY_BASELINE", "CODE_CONTEXT"], output: "REQUIREMENT_CONTRACT" } },
       }, null, 2));
       const created = spawnSync(node, [prepare, "--workspace", workspace, "--stage", "REQUIREMENTS", "--role", "requirement-analyst"], { encoding: "utf8" });
       expect(created.status, created.stderr).toBe(0);
       const receiptPath = join(workspace, ".sdlc", "context-receipts", "requirements-requirement-analyst.json");
       const receiptHash = createHash("sha256").update(readFileSync(receiptPath)).digest("hex");
       writeFileSync(join(workspace, "docs", "02-requirements", "contract.md"), `---\nworkflowId: AO-123\nstage: REQUIREMENTS\nrole: requirement-analyst\nappliedSkills: prepare-stage-context@1.0, start-ticket@1.0, grill-requirement@1.0\ncontextReceipt: .sdlc/context-receipts/requirements-requirement-analyst.json\ncontextReceiptSha256: ${receiptHash}\n---\n# Contract\n`);
+      const wrongOutput = spawnSync(node, [verify, "--workspace", workspace, "--stage", "REQUIREMENTS", "--artifact", "docs/02-requirements/not-the-contract.md"], { encoding: "utf8" });
+      expect(wrongOutput.status).not.toBe(0);
+      expect(wrongOutput.stderr).toMatch(/declared output/i);
       const valid = spawnSync(node, [verify, "--workspace", workspace, "--stage", "REQUIREMENTS", "--artifact", "docs/02-requirements/contract.md"], { encoding: "utf8" });
       expect(valid.status, valid.stderr).toBe(0);
       writeFileSync(join(workspace, "docs", "01-context", "baseline.md"), "changed baseline\n");
@@ -63,8 +68,11 @@ describe("GitHub Journey Context Receipt scripts", () => {
       const blocked = spawnSync(node, [advance, "--workspace", workspace, "--actor", "alice", "--evidence", "PR-1"], { encoding: "utf8" });
       expect(blocked.status).not.toBe(0);
       expect(blocked.stderr).toMatch(/GATE_BLOCKED/);
-      state.artifacts.REQUIREMENT_CONTRACT.status = "APPROVED";
-      writeFileSync(join(workspace, ".sdlc", "workflow.json"), JSON.stringify(state));
+      const incompleteSkip = spawnSync(node, [recordDecision, "--workspace", workspace, "--actor", "alice", "--evidence", "PR-1", "--decision", "skip"], { encoding: "utf8" });
+      expect(incompleteSkip.status).not.toBe(0);
+      expect(incompleteSkip.stderr).toMatch(/accepted-risk/);
+      const recorded = spawnSync(node, [recordDecision, "--workspace", workspace, "--actor", "alice", "--evidence", "PR-1", "--decision", "approve"], { encoding: "utf8" });
+      expect(recorded.status, recorded.stderr).toBe(0);
       const advanced = spawnSync(node, [advance, "--workspace", workspace, "--actor", "alice", "--evidence", "PR-1"], { encoding: "utf8" });
       expect(advanced.status, advanced.stderr).toBe(0);
       expect(JSON.parse(readFileSync(join(workspace, ".sdlc", "workflow.json"), "utf8")).currentStage).toBe("DESIGN");
@@ -122,7 +130,10 @@ describe("GitHub Journey Context Receipt scripts", () => {
         artifacts: Object.fromEntries(["journey-baseline.md", "repository-landscape.md", "api-call-graph.md", "code-context.md"].map((path, index) => [["JOURNEY_BASELINE", "REPOSITORY_LANDSCAPE", "API_CALL_GRAPH", "CODE_CONTEXT"][index], { path: `docs/01-context/${path}`, status: "APPROVED", verifiedAgainst: "abc123" }])),
         repositories: [{ name: "account-opening-api", channel: "API", status: "APPROVED", verifiedAgainst: "def456" }],
       }, null, 2));
-      const ready = spawnSync(node, [checkOnboarding, "--workspace", workspace, "--repositories", "account-opening-api"], { encoding: "utf8" });
+      const stale = spawnSync(node, [checkOnboarding, "--workspace", workspace, "--repositories", "account-opening-api", "--repository-revisions", "account-opening-api=changed"], { encoding: "utf8" });
+      expect(stale.status).not.toBe(0);
+      expect(stale.stderr).toContain("STALE_REPOSITORY_ONBOARDING");
+      const ready = spawnSync(node, [checkOnboarding, "--workspace", workspace, "--repositories", "account-opening-api", "--repository-revisions", "account-opening-api=def456"], { encoding: "utf8" });
       expect(ready.status, ready.stderr).toBe(0);
       expect(JSON.parse(ready.stdout).ready).toBe(true);
     } finally {

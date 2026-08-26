@@ -16,12 +16,16 @@ onboarding shortcut and must not create fictional baseline evidence.
 2. Collect the affected code repositories from the Epic/change, then run:
 
    ```text
-   node scripts/check-journey-onboarding.mjs --repositories <repo-a,repo-b>
+   node scripts/check-journey-onboarding.mjs --repositories <repo-a,repo-b> \
+     --repository-revisions <repo-a>=<current-commit>,<repo-b>=<current-commit>
    ```
 
    This is an Agent-internal command, not a user task. It requires approved
    Journey baseline, repository landscape, API call graph, code context and
-   approved repository onboarding evidence for every affected repository.
+   approved repository onboarding evidence for every affected repository. The
+   current commit comes from the affected repository checkout or a human-
+   confirmed immutable commit; the gate blocks if it differs from the commit
+   recorded during onboarding.
 3. If the check fails, stop with `BLOCKED_BY_ONBOARDING`. Show the exact missing
    items and route the user to `code-context-analyst` with `onboard-journey`,
    and to `onboard-repository` for each named repository. Do not create an Epic

@@ -16,7 +16,7 @@ const expectedAgents = [
 ];
 const skillDirectories: Record<string, string> = {
   "start-epic": "workflow", "initialize-journey-workspace": "workflow", "advance-stage": "workflow", "join-epic": "workflow", "change-epic": "workflow",
-  "start-ticket": "workflow", "resume-workflow": "workflow", "prepare-stage-context": "workflow", "import-pod-members": "workflow", "publish-agent-report": "workflow",
+  "start-ticket": "workflow", "resume-workflow": "workflow", "prepare-stage-context": "workflow", "record-human-decision": "workflow", "import-pod-members": "workflow", "publish-agent-report": "workflow",
   "analyze-code-context": "analysis", "grill-requirement": "analysis", "assess-api-compatibility": "analysis",
   "impact-analysis": "analysis",
   "design-solution": "design", "design-review": "design", "plan-change": "design", "adr": "design",
@@ -80,20 +80,20 @@ describe("central catalog", () => {
   it("manifest counts match the catalog", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.agents).toBe(13);
-    expect(manifest.skills).toBe(43);
+    expect(manifest.skills).toBe(44);
     expect(manifest.instructions).toBe(23);
     expect(manifest.policies).toBe(16);
-    expect(manifest.templates).toBe(27);
+    expect(manifest.templates).toBe(28);
     expect(existsSync(`${root}/${manifest.referencesFile}`)).toBe(true);
     expect(manifest.agentSkillRouting).toBe("manifests/agent-skill-routing.json");
     expect(manifest.agentContracts).toBe("manifests/agent-contracts.json");
     expect(existsSync(resolve(root, manifest.agentContracts))).toBe(true);
   });
 
-  it("contains all 43 skills with valid frontmatter", () => {
+  it("contains all 44 skills with valid frontmatter", () => {
     const files = readdirSync(`${root}/skills`, { recursive: true } as never)
       .filter((name) => String(name).endsWith("SKILL.md"));
-    expect(files).toHaveLength(43);
+    expect(files).toHaveLength(44);
     for (const skill of expectedSkills) {
       const group = skillDirectories[skill];
       if (!group) throw new Error(`No directory mapping for skill: ${skill}`);

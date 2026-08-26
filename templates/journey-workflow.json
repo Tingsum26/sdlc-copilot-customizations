@@ -25,7 +25,7 @@
     "verifiedAt": null
   },
   "currentStage": "REQUIREMENTS",
-  "stageOrder": ["REQUIREMENTS", "DESIGN", "PLAN", "TEST", "REVIEW"],
+  "stageOrder": ["REQUIREMENTS", "DESIGN", "PLAN", "IMPLEMENT", "TEST", "REVIEW"],
   "stageHistory": [],
   "status": "IN_PROGRESS",
   "sourceTickets": ["AO-123"],
@@ -36,6 +36,14 @@
   "artifacts": {
     "JOURNEY_BASELINE": {
       "path": "docs/01-context/journey-baseline.md",
+      "status": "APPROVED"
+    },
+    "REPOSITORY_LANDSCAPE": {
+      "path": "docs/01-context/repository-landscape.md",
+      "status": "APPROVED"
+    },
+    "API_CALL_GRAPH": {
+      "path": "docs/01-context/api-call-graph.md",
       "status": "APPROVED"
     },
     "CODE_CONTEXT": {
@@ -54,6 +62,10 @@
       "path": "docs/04-implementation/implementation-plan.md",
       "status": "DRAFT"
     },
+    "IMPLEMENTATION_EVIDENCE": {
+      "path": "docs/04-implementation/implementation-evidence.md",
+      "status": "DRAFT"
+    },
     "TEST_REPORT": {
       "path": "docs/05-testing/test-report.md",
       "status": "DRAFT"
@@ -67,13 +79,13 @@
     "REQUIREMENTS": {
       "role": "requirement-analyst",
       "requiredSkills": ["prepare-stage-context", "start-ticket", "grill-requirement", "impact-analysis", "publish-agent-report"],
-      "requiredInputs": ["JOURNEY_BASELINE", "CODE_CONTEXT"],
+      "requiredInputs": ["JOURNEY_BASELINE", "REPOSITORY_LANDSCAPE", "API_CALL_GRAPH", "CODE_CONTEXT"],
       "output": "REQUIREMENT_CONTRACT"
     },
     "DESIGN": {
       "role": "solution-architect",
       "requiredSkills": ["prepare-stage-context", "design-solution", "assess-api-compatibility", "design-review", "publish-agent-report"],
-      "requiredInputs": ["JOURNEY_BASELINE", "CODE_CONTEXT", "REQUIREMENT_CONTRACT"],
+      "requiredInputs": ["JOURNEY_BASELINE", "REPOSITORY_LANDSCAPE", "API_CALL_GRAPH", "CODE_CONTEXT", "REQUIREMENT_CONTRACT"],
       "output": "SOLUTION_DESIGN"
     },
     "PLAN": {
@@ -82,16 +94,23 @@
       "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN"],
       "output": "IMPLEMENTATION_PLAN"
     },
+    "IMPLEMENT": {
+      "role": "java-implementer",
+      "allowedRoles": ["java-implementer", "web-implementer", "ios-implementer", "android-implementer"],
+      "requiredSkills": ["prepare-stage-context", "implement-task", "verification-loop", "publish-agent-report"],
+      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN", "API_CALL_GRAPH"],
+      "output": "IMPLEMENTATION_EVIDENCE"
+    },
     "TEST": {
       "role": "test-designer",
       "requiredSkills": ["prepare-stage-context", "generate-tests", "contract-test-matrix", "plan-manual-e2e", "publish-agent-report"],
-      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN"],
+      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN", "IMPLEMENTATION_EVIDENCE"],
       "output": "TEST_REPORT"
     },
     "REVIEW": {
       "role": "pr-reviewer",
       "requiredSkills": ["prepare-stage-context", "review-pr", "publish-agent-report"],
-      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN", "TEST_REPORT"],
+      "requiredInputs": ["REQUIREMENT_CONTRACT", "SOLUTION_DESIGN", "IMPLEMENTATION_PLAN", "IMPLEMENTATION_EVIDENCE", "TEST_REPORT"],
       "output": "PR_REVIEW"
     }
   }

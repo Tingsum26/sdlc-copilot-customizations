@@ -21,9 +21,11 @@ all Agent Markdown outputs; it is not the API repository and not a plugin.
 3. Do not choose an API/Web/iOS/Android code repository as the Journey
    repository. If the user provides a code repository, ask for the separate
    Journey repository instead.
-4. Confirm that the user can read and write the repository and that the
-   current branch is `journey/<epic-or-change-id>-<slug>` (or create that
-   branch only after explicit confirmation).
+4. Confirm that the user can read and write the repository. During onboarding,
+   stay on its onboarding/default branch. During Epic start, `start-epic` is
+   the only Skill allowed to create `journey/<epic-or-change-id>-<slug>`, and
+   only after its onboarding gate passes. This Skill never creates an Epic
+   branch.
 5. Create the `.sdlc/`, `docs/`, `docs/01-context/`, and context-receipt
    directories from the central templates. Keep reusable onboarding in
    `.sdlc/journey-onboarding.json`; create an Epic-specific

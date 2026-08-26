@@ -11,12 +11,12 @@ A ticket has no persisted requirement-analysis task, or the human asks to start 
 
 ## Procedure
 1. Reuse the existing Journey branch for its Epic/change, or create one with `start-epic`. Search `workflow.json` and the open Journey PR before creating anything duplicate.
-2. Add the ticket and its code-repository branch to `.sdlc/workflow.json`; Jira remains an input, while Git is the workflow record.
+2. Add the ticket and its code-repository branch to `.sdlc/workflow.json`; Jira remains an input, while Git is the workflow record. Confirm exactly one implementation channel for this ticket and set `stages.IMPLEMENT.role` to its concrete Agent: `java-implementer` for API/Java, `web-implementer`, `ios-implementer`, or `android-implementer`. It must be in `stages.IMPLEMENT.allowedRoles`. Split a cross-channel ticket into linked channel tickets; one implementation stage cannot safely own two code repositories.
 3. Run `node scripts/prepare-journey-context.mjs --stage REQUIREMENTS --role requirement-analyst`. Read the receipt, Journey baseline, code context, repository onboarding, linked policies and applicable prior decisions.
 4. Run the `grill-requirement` skill for the questioning loop (one focused question at a time; record unresolved items instead of inventing answers).
 5. Produce the requirement report from `templates/requirement-contract.md`, using `templates/journey-artifact.md` front matter with the receipt path/hash.
-6. Run `verify-journey-artifact.mjs`, update its status in `workflow.json` to `PENDING_APPROVAL`, then run `publish-agent-report`. That Skill commits/pushes the current Journey branch, creates or updates its one Journey PR, and posts the report card comment with the next-Agent command.
-7. Ask the human to confirm the exact commit/PR review. Record `APPROVED` or `SKIPPED_WITH_EVIDENCE` in `workflow.json` only after that human decision.
+6. Update the declared output status in `workflow.json` to `PENDING_APPROVAL`, run `verify-journey-artifact.mjs`, then run `publish-agent-report`. That Skill commits/pushes the current Journey branch, creates or updates its one Journey PR, and posts the report card comment with the next-Agent command.
+7. Ask the human to confirm the exact commit/PR review. Only `delivery-coordinator` may record `APPROVED` or `SKIPPED_WITH_EVIDENCE` through `record-human-decision` after that human decision.
 8. Stop. Do not design, edit code, push a code PR, or approve on behalf of a person.
 
 ## Output contract

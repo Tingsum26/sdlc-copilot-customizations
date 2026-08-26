@@ -7,6 +7,10 @@ const argument = (name) => {
 };
 const workspace = argument("--workspace") ?? process.cwd();
 const requestedRepositories = (argument("--repositories") ?? "").split(",").map((value) => value.trim()).filter(Boolean);
+const expectedRevisions = new Map((argument("--repository-revisions") ?? "").split(",").map((value) => value.trim()).filter(Boolean).flatMap((value) => {
+  const separator = value.indexOf("=");
+  return separator > 0 && separator < value.length - 1 ? [[value.slice(0, separator), value.slice(separator + 1)]] : [];
+}));
 const manifestPath = join(workspace, ".sdlc", "journey-onboarding.json");
 const accepted = new Set(["APPROVED", "CURRENT"]);
 const blockers = [];
@@ -19,6 +23,7 @@ if (!existsSync(manifestPath)) {
     const artifact = manifest.artifacts?.[artifactId];
     if (!artifact) { blockers.push({ type: "MISSING_ARTIFACT", artifactId, action: "Run onboard-journey" }); continue; }
     if (!accepted.has(artifact.status)) blockers.push({ type: "ARTIFACT_NOT_APPROVED", artifactId, status: artifact.status ?? "MISSING", action: "Run onboard-journey or sync-onboarding" });
+    if (!artifact.verifiedAgainst) blockers.push({ type: "MISSING_ARTIFACT_EVIDENCE", artifactId, action: "Record the onboarding source revision, then re-approve" });
     if (typeof artifact.path !== "string" || !artifact.path || isAbsolute(artifact.path)) { blockers.push({ type: "INVALID_ARTIFACT_PATH", artifactId }); continue; }
     const absolute = resolve(workspace, artifact.path);
     const fromWorkspace = relative(resolve(workspace), absolute);
@@ -30,6 +35,9 @@ if (!existsSync(manifestPath)) {
     if (!repository) { blockers.push({ type: "MISSING_REPOSITORY_ONBOARDING", repository: name, action: "Run onboard-repository, then update Journey onboarding" }); continue; }
     if (!accepted.has(repository.status)) blockers.push({ type: "REPOSITORY_ONBOARDING_NOT_APPROVED", repository: name, status: repository.status ?? "MISSING", action: "Run onboard-repository or sync-onboarding" });
     if (!repository.verifiedAgainst) blockers.push({ type: "MISSING_REPOSITORY_EVIDENCE", repository: name, action: "Record the source commit after onboarding" });
+    const expectedRevision = expectedRevisions.get(name);
+    if (!expectedRevision) blockers.push({ type: "MISSING_REQUESTED_REVISION", repository: name, action: "Pass the repository's current commit using --repository-revisions name=<commit>" });
+    else if (repository.verifiedAgainst !== expectedRevision) blockers.push({ type: "STALE_REPOSITORY_ONBOARDING", repository: name, onboardedAt: repository.verifiedAgainst, current: expectedRevision, action: "Run sync-onboarding for this repository" });
   }
   if (blockers.length === 0) {
     console.log(JSON.stringify({ ready: true, journeyId: manifest.journeyId, manifest: ".sdlc/journey-onboarding.json", verifiedAt: manifest.verifiedAt, repositories: requestedRepositories }, null, 2));

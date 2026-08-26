@@ -18,13 +18,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Verify each changed Journey artifact
+      - name: Verify every declared non-draft Journey artifact
         shell: bash
         run: |
-          git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'docs/**/*.md' |
-            while IFS= read -r artifact; do
-              [ -z "$artifact" ] && continue
-              stage=$(sed -n 's/^stage: //p' "$artifact" | head -n 1)
-              [ -z "$stage" ] && continue
-              node scripts/verify-journey-artifact.mjs --stage "$stage" --artifact "$artifact"
-            done
+          if [ ! -f .sdlc/workflow.json ]; then
+            echo "No Epic workflow state: onboarding-only pull request."
+            exit 0
+          fi
+          node --input-type=module <<'NODE' > /tmp/journey-artifacts.tsv
+          import { existsSync, readFileSync } from 'node:fs';
+          const workflow = JSON.parse(readFileSync('.sdlc/workflow.json', 'utf8'));
+          for (const [stageName, stage] of Object.entries(workflow.stages ?? {})) {
+            const artifact = workflow.artifacts?.[stage.output];
+            if (artifact && artifact.status !== 'DRAFT' && existsSync(artifact.path)) {
+              console.log(`${stageName}\t${artifact.path}`);
+            }
+          }
+          NODE
+          while IFS=$'\t' read -r stage artifact; do
+            [ -z "$stage" ] && continue
+            node scripts/verify-journey-artifact.mjs --stage "$stage" --artifact "$artifact"
+          done < /tmp/journey-artifacts.tsv

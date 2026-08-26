@@ -24,10 +24,10 @@ Before performing any role-specific work:
    history or assumptions.
 4. Create only the output owned by your stage. Its front matter must contain
    the Context Receipt path, its SHA-256, and an `appliedSkills` list matching
-   the route. Run
-   `node scripts/verify-journey-artifact.mjs --stage <STAGE> --artifact <PATH>`
-   before asking for a PR or a human approval. Set the artifact to
-   `PENDING_APPROVAL`, then invoke `publish-agent-report`: commit and push only
+   the route. Set the declared workflow artifact to `PENDING_APPROVAL`, then
+   run `node scripts/verify-journey-artifact.mjs --stage <STAGE> --artifact
+   <PATH>` before asking for a PR or a human approval. Then invoke
+   `publish-agent-report`: commit and push only
    the current unprotected Journey branch, create or update its one Journey PR,
    and upsert this Agent's marked report comment. The PR description/comment
    must show the report index, the human decision now required, the next Agent
