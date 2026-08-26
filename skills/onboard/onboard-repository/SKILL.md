@@ -13,7 +13,12 @@ A repository enters the platform or its onboarding is missing.
 1. Scan structure, build files, entry points, tests, and deployment notes.
 2. Draft the content for `docs/architecture/overview.md`, module notes, build/test/run commands, and `.agent-context.yaml`; the human places it in the repository via PR.
 3. Mark each claim with the source commit; mark unknowns `KNOWN_GAP`.
-4. Present the onboarding draft for human review and PR.
+4. Present the onboarding draft for human review and PR. After merge, add or
+   refresh the small repository entry in the Journey repository's
+   `.sdlc/journey-onboarding.json`: repository name/channel, summary path,
+   approved status and `verifiedAgainst` commit. The full technical details may
+   remain in the code repository; the Journey manifest is the cross-repository
+   gate used by `start-epic`.
 
 ## Output contract
 Repository onboarding draft plus the context file content, for the human to PR. Never claim a full call graph when only static reading was possible.

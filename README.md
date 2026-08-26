@@ -34,12 +34,14 @@ See:
 - `templates/report-render-contract.json`
 - `templates/journey-agent-pr.md`
 - `templates/journey-agent-report-comment.md`
+- `templates/journey-onboarding.json`
 - `templates/verify-journey.yml`
 - `scripts/prepare-journey-context.mjs`
 - `scripts/advance-journey-stage.mjs`
 - `scripts/verify-journey-artifact.mjs`
 - `scripts/render-agent-pr.mjs`
 - `scripts/record-journey-pr.mjs`
+- `scripts/check-journey-onboarding.mjs`
 - `manifests/agent-skill-routing.json`
 - `manifests/agent-contracts.json`
 
@@ -69,7 +71,7 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 | `skills/`      | 43    | `SKILL.md` files organized by lifecycle phase           |
 | `instructions/`| 23    | Shared operating, context, quality and domain rules   |
 | `policies/`    | 15    | Machine-readable policy JSON (+ `README.md` vocabulary) |
-| `templates/`   | 26    | Reusable artifact and GitHub report templates          |
+| `templates/`   | 27    | Reusable artifact, onboarding and GitHub report templates |
 | `evals/`       | 4     | Behavior, RED/GREEN, and skill-contract eval scenarios |
 | `hooks/`       | 2     | Hook manifest + local `run-hook.mjs` runner            |
 | `manifests/`   | 2     | Bundle inventory, routing and typed Agent contracts    |

@@ -83,7 +83,7 @@ describe("central catalog", () => {
     expect(manifest.skills).toBe(43);
     expect(manifest.instructions).toBe(23);
     expect(manifest.policies).toBe(16);
-    expect(manifest.templates).toBe(26);
+    expect(manifest.templates).toBe(27);
     expect(existsSync(`${root}/${manifest.referencesFile}`)).toBe(true);
     expect(manifest.agentSkillRouting).toBe("manifests/agent-skill-routing.json");
     expect(manifest.agentContracts).toBe("manifests/agent-contracts.json");

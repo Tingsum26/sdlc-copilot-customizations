@@ -19,6 +19,11 @@
     "headBranch": "journey/AO-123-open-account",
     "reports": {}
   },
+  "onboarding": {
+    "manifest": ".sdlc/journey-onboarding.json",
+    "status": "APPROVED",
+    "verifiedAt": null
+  },
   "currentStage": "REQUIREMENTS",
   "stageOrder": ["REQUIREMENTS", "DESIGN", "PLAN", "TEST", "REVIEW"],
   "stageHistory": [],

@@ -12,6 +12,7 @@ const verify = join(root, "scripts", "verify-journey-artifact.mjs");
 const advance = join(root, "scripts", "advance-journey-stage.mjs");
 const renderPr = join(root, "scripts", "render-agent-pr.mjs");
 const recordPr = join(root, "scripts", "record-journey-pr.mjs");
+const checkOnboarding = join(root, "scripts", "check-journey-onboarding.mjs");
 
 describe("GitHub Journey Context Receipt scripts", () => {
   it("pins approved upstream artifacts and rejects a stale receipt", () => {
@@ -100,6 +101,30 @@ describe("GitHub Journey Context Receipt scripts", () => {
       const persisted = JSON.parse(readFileSync(join(workspace, ".sdlc", "workflow.json"), "utf8"));
       expect(persisted.journeyPullRequest.number).toBe(42);
       expect(persisted.journeyPullRequest.reports.REQUIREMENT_CONTRACT.commentUrl).toContain("issuecomment-100");
+    } finally {
+      rmSync(workspace, { recursive: true, force: true });
+    }
+  });
+
+  it("blocks Start Epic until the reusable Journey onboarding is complete", () => {
+    const workspace = mkdtempSync(join(tmpdir(), "journey-onboarding-"));
+    try {
+      mkdirSync(join(workspace, ".sdlc"), { recursive: true });
+      const missing = spawnSync(node, [checkOnboarding, "--workspace", workspace, "--repositories", "account-opening-api"], { encoding: "utf8" });
+      expect(missing.status).not.toBe(0);
+      expect(missing.stderr).toContain("BLOCKED_BY_ONBOARDING");
+      for (const path of ["journey-baseline.md", "repository-landscape.md", "api-call-graph.md", "code-context.md"]) {
+        mkdirSync(join(workspace, "docs", "01-context"), { recursive: true });
+        writeFileSync(join(workspace, "docs", "01-context", path), `${path}\n`);
+      }
+      writeFileSync(join(workspace, ".sdlc", "journey-onboarding.json"), JSON.stringify({
+        schemaVersion: "journey-onboarding/v1", journeyId: "account-opening", status: "APPROVED", verifiedAt: "2026-08-26T00:00:00Z",
+        artifacts: Object.fromEntries(["journey-baseline.md", "repository-landscape.md", "api-call-graph.md", "code-context.md"].map((path, index) => [["JOURNEY_BASELINE", "REPOSITORY_LANDSCAPE", "API_CALL_GRAPH", "CODE_CONTEXT"][index], { path: `docs/01-context/${path}`, status: "APPROVED", verifiedAgainst: "abc123" }])),
+        repositories: [{ name: "account-opening-api", channel: "API", status: "APPROVED", verifiedAgainst: "def456" }],
+      }, null, 2));
+      const ready = spawnSync(node, [checkOnboarding, "--workspace", workspace, "--repositories", "account-opening-api"], { encoding: "utf8" });
+      expect(ready.status, ready.stderr).toBe(0);
+      expect(JSON.parse(ready.stdout).ready).toBe(true);
     } finally {
       rmSync(workspace, { recursive: true, force: true });
     }

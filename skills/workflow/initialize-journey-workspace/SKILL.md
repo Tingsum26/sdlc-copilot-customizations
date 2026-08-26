@@ -25,9 +25,11 @@ all Agent Markdown outputs; it is not the API repository and not a plugin.
    current branch is `journey/<epic-or-change-id>-<slug>` (or create that
    branch only after explicit confirmation).
 5. Create the `.sdlc/`, `docs/`, `docs/01-context/`, and context-receipt
-   directories from the central templates. Write the selected repository
-   metadata into `.sdlc/workflow.json` and set `journeyRepository.status` to
-   `CONFIGURED` only after the user confirms the target.
+   directories from the central templates. Keep reusable onboarding in
+   `.sdlc/journey-onboarding.json`; create an Epic-specific
+   `.sdlc/workflow.json` only after `start-epic` confirms onboarding is ready.
+   Write selected repository metadata into the appropriate manifest only after
+   the user confirms the target.
 6. Stop and report the selected repository, branch and output location before
    routing to Epic or Requirement analysis.
 

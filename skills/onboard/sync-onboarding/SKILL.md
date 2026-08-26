@@ -13,7 +13,10 @@ Onboarding is flagged `POSSIBLY_STALE`/`STALE`, or a merge changed the surface i
 1. Compare the documented source commit with the current checkout.
 2. Re-verify the affected claims; update only what changed.
 3. Recompute the evidence and gap labels.
-4. Produce an onboarding update draft or PR description for the human.
+4. Update the affected Journey onboarding manifest entry and set it to
+   `POSSIBLY_STALE`/`STALE` until the refreshed evidence is approved. Produce
+   an onboarding update draft or PR description for the human. A stale required
+   entry blocks a new Epic through `check-journey-onboarding.mjs`.
 
 ## Output contract
 Updated onboarding draft with a new verified-against commit, for the human to PR. Never silently trust the old summary.

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "journey-onboarding/v1",
+  "journeyId": "account-opening",
+  "status": "DRAFT",
+  "verifiedAt": null,
+  "verifiedBy": null,
+  "artifacts": {
+    "JOURNEY_BASELINE": {
+      "path": "docs/01-context/journey-baseline.md",
+      "status": "DRAFT",
+      "verifiedAgainst": null
+    },
+    "REPOSITORY_LANDSCAPE": {
+      "path": "docs/01-context/repository-landscape.md",
+      "status": "DRAFT",
+      "verifiedAgainst": null
+    },
+    "API_CALL_GRAPH": {
+      "path": "docs/01-context/api-call-graph.md",
+      "status": "DRAFT",
+      "verifiedAgainst": null
+    },
+    "CODE_CONTEXT": {
+      "path": "docs/01-context/code-context.md",
+      "status": "DRAFT",
+      "verifiedAgainst": null
+    }
+  },
+  "repositories": [
+    {
+      "name": "account-opening-api",
+      "channel": "API",
+      "summaryPath": "docs/01-context/repositories/account-opening-api.md",
+      "status": "DRAFT",
+      "verifiedAgainst": null
+    }
+  ],
+  "knownGaps": []
+}
