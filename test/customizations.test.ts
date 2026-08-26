@@ -24,12 +24,15 @@ describe("central Copilot customizations", () => {
   }
 
   for (const name of ["requirement-analyst", "solution-architect", "pr-reviewer"]) {
-    it(`${name} is a bounded agent definition`, () => {
+    it(`${name} has bounded local report-publication authority`, () => {
       const source = read(`agents/${name}.agent.md`);
       expect(source).toMatch(/^---\r?\nname:/);
       expect(source).toMatch(/tools:/);
-      expect(source).toMatch(/Workflow MCP|workflow_/i);
-      expect(source).not.toMatch(/tools:.*(?:edit|terminal|execute|MongoDB)/i);
+      expect(source).toMatch(/GitHub-only|Context Receipt|workflow_/i);
+      expect(source).toMatch(/tools:.*(?:read|search).*edit.*execute/i);
+      expect(source).toMatch(/publish-agent-report/i);
+      expect(source).toMatch(/protected branch|merge|approve/i);
+      expect(source).not.toMatch(/MongoDB/i);
     });
   }
 
@@ -38,6 +41,7 @@ describe("central Copilot customizations", () => {
     expect(source).toMatch(/read.only|只读/i);
     expect(source).toMatch(/evidence|证据/i);
     expect(source).toMatch(/severity|严重/i);
+    expect(source).toMatch(/only permitted mutation/i);
   });
 });
 
@@ -52,12 +56,10 @@ describe("copilot format intersection", () => {
     expect(content).not.toContain("claude:");
   });
 
-  it("every agent declares the sdlc-workflow MCP tools and a non-empty tool list", () => {
-    const files = readdirSync(resolve(root, "agents")).filter((name) => name.endsWith(".agent.md"));
-    for (const name of files) {
-      const content = readFileSync(resolve(root, "agents", name), "utf8");
-      expect(content).toMatch(/workflow_[a-z_]+/);
-      expect(content).not.toMatch(/tools:\s*\[\s*\]/);
-    }
+  it("publishes the GitHub-only Context Receipt guard and deterministic validators", () => {
+    expect(read("instructions/github-journey-collaboration.instructions.md")).toMatch(/Context Receipt/);
+    expect(read("policies/context-receipt.json")).toMatch(/BLOCK/);
+    expect(read("scripts/prepare-journey-context.mjs")).toMatch(/sha256/);
+    expect(read("scripts/verify-journey-artifact.mjs")).toMatch(/stale/);
   });
 });

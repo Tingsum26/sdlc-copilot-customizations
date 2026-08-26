@@ -1,9 +1,70 @@
 # sdlc-copilot-customizations
 
 A public, **fictional-data** customization bundle for a Local-Copilot SDLC
-platform. This repository contains the central Agents, Skills, Instructions,
-Policies, Templates, Hooks, Evals, Manifests, and MCP catalog used to drive a
+platform. This repository contains the central Agents, Skills, Prompt Files,
+Instructions, Policies, Templates, Hooks, Evals, Manifests, and MCP catalog used to drive a
 spec → plan → task workflow with GitHub Copilot agent mode in VS Code.
+
+## GitHub-only MVP mode
+
+The default MVP does **not** deploy Workflow Service, Workflow MCP, MongoDB,
+or a server-side agent. A Journey repository branch is the source of truth.
+Its `.sdlc/workflow.json`, versioned Markdown artifacts, Context Receipts and
+pull requests provide persistence, recovery and audit.
+
+GitHub Journey PRs are the required human workbench for MVP: every verified
+stage artifact is committed to the Journey branch, linked from the PR
+description and projected into a marked PR comment that states the required
+human decision, next Agent and `/resume-workflow` command. VSIX is an optional
+local companion, not a workflow dependency.
+
+Before any agent starts a stage, the Coordinator or specialist automatically
+invokes the internal `prepare-stage-context` Skill. It reads the pinned
+upstream artifacts and puts the receipt hash in its output; the user does not
+need to run a Node command. A deterministic stage gate then holds the output at
+`PENDING_APPROVAL` until a human approves it (or records an evidence-backed
+`SKIPPED_WITH_EVIDENCE`). Only the Coordinator's `advance-stage` Skill may move
+`stageOrder` forward. The PR workflow validates that the receipt is current.
+See:
+
+- `instructions/github-journey-collaboration.instructions.md`
+- `templates/journey-workflow.json`
+- `templates/journey-artifact.md`
+- `templates/agent-report.md`
+- `templates/report-render-contract.json`
+- `templates/journey-agent-pr.md`
+- `templates/journey-agent-report-comment.md`
+- `templates/journey-onboarding.json`
+- `templates/verify-journey.yml`
+- `scripts/prepare-journey-context.mjs`
+- `scripts/advance-journey-stage.mjs`
+- `scripts/verify-journey-artifact.mjs`
+- `scripts/render-agent-pr.mjs`
+- `scripts/record-journey-pr.mjs`
+- `scripts/check-journey-onboarding.mjs`
+- `scripts/validate-code-context-evidence.mjs`
+- `manifests/agent-skill-routing.json`
+- `manifests/agent-contracts.json`
+
+Copy the templates and scripts into each private Journey repository. Install
+only the optional local MCP connectors actually needed by that Journey (Jira,
+Confluence, GitHub Enterprise, Figma or code graph); none persist workflow
+state. `mcp/github-only-mvp-profile.json` is the selected MVP profile.
+
+## Stage Prompt Files
+
+`prompts/` holds versioned, role-bound entry prompts for every MVP stage:
+Journey onboarding, Epic start/resume/analysis, requirements, design, planning,
+Java/Web/iOS/Android implementation, test design, accessibility, and PR review.
+They ask only for current task parameters. The selected Agent, routed Skills,
+Instructions and stage gates remain the source of truth, so a Prompt File
+cannot bypass context receipts or approval.
+
+The current VSIX bundle installer copies and activates them as global
+`chat.promptFilesLocations`; type `/` in Copilot Chat to run one. Without the
+VSIX, copy the selected files into a Journey repository's `.github/prompts/`
+folder. Prompt Files work with local VS Code extension-host agents; the MVP is
+deliberately designed for that local Copilot workflow.
 
 > ⚠️ **Fictional data only.** Every name, ticket, repository, and principal in
 > this bundle is invented. Nothing here references real credentials, real
@@ -23,21 +84,24 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 | Directory      | Count | Description                                            |
 |----------------|-------|--------------------------------------------------------|
 | `agents/`      | 13    | `.agent.md` role definitions (planner, implementers, …) |
-| `skills/`      | 33    | `SKILL.md` files organized by lifecycle phase           |
-| `instructions/`| 19    | Per-domain instruction sets                            |
-| `policies/`    | 15    | Machine-readable policy JSON (+ `README.md` vocabulary) |
-| `templates/`   | 20    | Reusable artifact templates                            |
+| `skills/`      | 47    | `SKILL.md` files organized by lifecycle phase           |
+| `prompts/`     | 14    | `.prompt.md` stage entry points bound to named Agents    |
+| `instructions/`| 23    | Shared operating, context, quality and domain rules   |
+| `policies/`    | 16    | Machine-readable policy JSON (+ `README.md` vocabulary) |
+| `templates/`   | 30    | Reusable artifact, onboarding and GitHub report templates |
 | `evals/`       | 4     | Behavior, RED/GREEN, and skill-contract eval scenarios |
 | `hooks/`       | 2     | Hook manifest + local `run-hook.mjs` runner            |
-| `manifests/`   | 1     | `bundle-manifest.json`                                 |
-| `mcp/`         | 2     | MCP server catalog + role profiles                     |
+| `manifests/`   | 2     | Bundle inventory, routing and typed Agent contracts    |
+| `mcp/`         | 2     | MCP server catalog + six role profiles                 |
 
-113 files total, byte-identical to the source `central/` subtree.
+The historical Workflow-Service-oriented files remain as a Phase 2 reference.
+The GitHub-only MVP additions intentionally supersede them at runtime; this is
+no longer a byte-identical subtree extraction.
 
 ## Known gap (partial catalog)
 
 This bundle is a **PARTIAL** extraction. The fully approved central catalog
-records more than the 13 Agents / 33 Skills / 19 Instructions present here;
+records more than the 13 Agents / 47 Skills / 23 Instructions present here;
 the remaining entries have not yet been split out of the platform monorepo and
 are not included in this repository. Treat the inventory above as the subset
 that is currently published, not the complete approved catalog.

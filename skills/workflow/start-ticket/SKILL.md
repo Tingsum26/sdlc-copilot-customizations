@@ -1,7 +1,7 @@
 ---
 name: start-ticket
 description: Use when beginning implementation from one or more Jira tickets and the requirement must be clarified against repository and Journey context before design or coding.
-version: "2.0"
+version: "2.1"
 ---
 
 # Start Ticket
@@ -10,14 +10,14 @@ version: "2.0"
 A ticket has no persisted requirement-analysis task, or the human asks to start one.
 
 ## Procedure
-1. Call `workflow_list_my_tasks`, then reuse an existing matching task or ask the user before creating a duplicate.
-2. Call `workflow_get_task_context`. Read ticket text, repository onboarding, Journey/API relationships, relevant code, policies, prior decisions, API compatibility constraints, and release-train context that are actually available.
-3. Call `workflow_claim_task` with the current version. Never assume that selecting this skill claims work.
+1. Reuse the existing Journey branch for its Epic/change, or create one with `start-epic`. Search `workflow.json` and the open Journey PR before creating anything duplicate.
+2. Add the ticket and its code-repository branch to `.sdlc/workflow.json`; Jira remains an input, while Git is the workflow record. Confirm exactly one implementation channel for this ticket and set `stages.IMPLEMENT.role` to its concrete Agent: `java-implementer` for API/Java, `web-implementer`, `ios-implementer`, or `android-implementer`. It must be in `stages.IMPLEMENT.allowedRoles`. Split a cross-channel ticket into linked channel tickets; one implementation stage cannot safely own two code repositories.
+3. Run `node scripts/prepare-journey-context.mjs --stage REQUIREMENTS --role requirement-analyst`. Read the receipt, Journey baseline, code context, repository onboarding, linked policies and applicable prior decisions.
 4. Run the `grill-requirement` skill for the questioning loop (one focused question at a time; record unresolved items instead of inventing answers).
-5. Produce the requirement report from `templates/requirement-contract.md`.
-6. Submit with `workflow_submit_artifact`.
-7. Ask the human to confirm the exact artifact version. After confirmation, call `workflow_complete_task` to move it to the approval gate.
-8. Stop. Do not design, edit code, push a branch, open a PR, or approve on behalf of a person.
+5. Produce the requirement report from `templates/requirement-contract.md`, using `templates/journey-artifact.md` front matter with the receipt path/hash.
+6. Update the declared output status in `workflow.json` to `PENDING_APPROVAL`, run `verify-journey-artifact.mjs`, then run `publish-agent-report`. That Skill commits/pushes the current Journey branch, creates or updates its one Journey PR, and posts the report card comment with the next-Agent command.
+7. Ask the human to confirm the exact commit/PR review. Only `delivery-coordinator` may record `APPROVED` or `SKIPPED_WITH_EVIDENCE` through `record-human-decision` after that human decision.
+8. Stop. Do not design, edit code, push a code PR, or approve on behalf of a person.
 
 ## Output contract
-Artifact type `REQUIREMENT_REPORT` matching the requirement-contract schema. If onboarding or code evidence is missing, mark `BLOCKED_BY_CONTEXT` and state the smallest evidence needed. A user may explicitly skip a later design approval; record that decision and actor in the workflow via `workflow_task_skip`, but never silently skip this requirement confirmation.
+An evidence-backed requirement contract committed to the Journey branch, with a current Context Receipt. If onboarding or code evidence is missing, mark `BLOCKED_BY_CONTEXT` and state the smallest evidence needed. A user may explicitly skip a later design approval only through `SKIPPED_WITH_EVIDENCE`; never silently skip this requirement confirmation.

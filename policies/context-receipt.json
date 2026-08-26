@@ -1,0 +1,8 @@
+{
+  "id": "github-context-receipt",
+  "version": 1,
+  "rule": "Every stage artifact in GitHub-only MVP must reference a current Context Receipt generated from the stage's declared upstream artifacts. Missing, stale, altered, or incomplete receipts block the stage output from merging.",
+  "when": { "event": "pull-request-check" },
+  "effect": "BLOCK",
+  "evidence": ".sdlc/context-receipts/*.json, artifact front matter, SHA-256 input hashes, and workflow.json"
+}

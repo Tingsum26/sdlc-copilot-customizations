@@ -29,3 +29,27 @@ projects below. Status captured 2026-08-18.
 Compliance rule: no text from the concept-only section appears in this
 repository. All copied or adapted material comes from MIT or Apache-2.0
 sources only. This file is validated by `packages/contracts` tests.
+
+## 2026 reference audit (method patterns only)
+
+The central bundle was reviewed against the following public references on
+2026-08-25. We extracted patterns and rewrote them for the local VS Code
+Copilot constraint; we did not copy repository text or introduce a cloud Agent.
+
+| Reference | Observed pattern | Applied here |
+|---|---|---|
+| [GitHub Spec Kit](https://github.com/github/spec-kit) | Spec → Plan → Tasks → Implement; each phase produces a reviewable Markdown artifact; extensions and presets | Journey stages, typed artifacts, Context Receipts, dependency-aware plans |
+| [obra/superpowers](https://github.com/obra/superpowers) | Socratic clarification, signed-off design, executable plan, red/green TDD, human gates, subagent handoffs | `grill-requirement`, plan/test gates, verification loop, no self-approval |
+| [wshobson/agents](https://github.com/wshobson/agents) | One source catalog, isolated composable plugins, progressive disclosure, structural validation and evals | Central routing/contract manifests, lifecycle Skills, bundle tests |
+| [github/awesome-copilot](https://github.com/github/awesome-copilot) | Repository instructions, reusable prompts, scoped agents and Copilot-native customization layout | Always-on Instructions, typed Agent profiles, central bundle installation |
+| [trsdn/github-copilot-agent](https://github.com/trsdn/github-copilot-agent) | Scaffolding for agents/instructions/skills/hooks, repository/org layering, sync and compatibility audits | Central contract manifest, `customization-audit`, Journey-local overrides |
+| [agentic_development_workflow](https://github.com/wilsonkichoi/agentic_development_workflow) | Durable review files, one task per session, human phase gates, separate QA sessions, parallel waves | Review artifacts, stage gates, read-only QA/reviewer roles, DAG constraints |
+| [GitHub Copilot customization cheat sheet](https://docs.github.com/en/copilot/reference/customization-cheat-sheet) and [VS Code custom-agent guidance](https://github.com/microsoft/vscode-docs/blob/main/docs/copilot/customization/custom-agents.md) | Separate always-on Instructions, reusable Skills, and role-constrained Agents; use explicit handoffs and compatible front matter | Clarified the central role/Skill/Instruction boundary and retained VS Code-only agent targeting |
+| [Sourcegraph SCIP Java](https://github.com/sourcegraph/scip-java) | Java/Scala/Kotlin symbol indexing, including optional cross-repository navigation when dependency metadata exists | Added a local optional-indexer evidence tier; no scanner, Docker, server, or upload is required for MVP |
+| [GitHub CodeQL](https://github.com/github/codeql) and [Joern](https://github.com/joernio/joern) | Established source/code-property-graph analysis approaches with graph/query outputs | Added evidence hierarchy and scanner-provenance rules; no query/tool output may be fabricated or treated as runtime proof |
+
+Official GitHub guidance is the compatibility authority: custom agents are
+Markdown profiles, repository instructions are always-on or path-scoped, and
+Skills are detailed task procedures loaded when relevant. The bundle keeps
+those concerns separate and adds deterministic validators because prompt text
+alone cannot enforce tool use or stage progression.

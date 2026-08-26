@@ -1,0 +1,41 @@
+name: Verify Journey collaboration contract
+
+on:
+  pull_request:
+    paths:
+      - '.sdlc/**'
+      - 'docs/**'
+      - 'scripts/prepare-journey-context.mjs'
+      - 'scripts/verify-journey-artifact.mjs'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify every declared non-draft Journey artifact
+        shell: bash
+        run: |
+          if [ ! -f .sdlc/workflow.json ]; then
+            echo "No Epic workflow state: onboarding-only pull request."
+            exit 0
+          fi
+          node --input-type=module <<'NODE' > /tmp/journey-artifacts.tsv
+          import { existsSync, readFileSync } from 'node:fs';
+          const workflow = JSON.parse(readFileSync('.sdlc/workflow.json', 'utf8'));
+          for (const [stageName, stage] of Object.entries(workflow.stages ?? {})) {
+            const artifact = workflow.artifacts?.[stage.output];
+            if (artifact && artifact.status !== 'DRAFT' && existsSync(artifact.path)) {
+              console.log(`${stageName}\t${artifact.path}`);
+            }
+          }
+          NODE
+          while IFS=$'\t' read -r stage artifact; do
+            [ -z "$stage" ] && continue
+            node scripts/verify-journey-artifact.mjs --stage "$stage" --artifact "$artifact"
+          done < /tmp/journey-artifacts.tsv
