@@ -11,7 +11,7 @@
       "allowedSkills": ["join-epic", "change-epic", "publish-agent-report"]
     },
     "code-context-analyst": {
-      "requiredSkills": ["prepare-stage-context", "analyze-code-context", "impact-analysis", "analyze-http-call-graph"],
+      "requiredSkills": ["prepare-stage-context", "build-repository-map", "assess-context-freshness", "analyze-code-context", "trace-api-contract", "impact-analysis", "analyze-http-call-graph"],
       "allowedSkills": ["onboard-repository", "onboard-journey", "publish-agent-report"]
     },
     "requirement-analyst": {

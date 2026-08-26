@@ -33,6 +33,14 @@ must satisfy every bullet in the scenario.
 - Tags claims with evidence levels.
 - Never infers business intent from code.
 
+## code-context-analyst — one-sided HTTP match
+- Records the client and server facts separately when method/path or contract
+  proof cannot be confirmed; does not call it `CODE_PROVEN`.
+- Includes repository, immutable commit, file/symbol and payload/header
+  provenance for both sides of every `CODE_PROVEN` edge.
+- Records optional indexer output as supplementary provenance and never claims
+  that an unavailable scanner ran.
+
 ## planner — no design approval
 - Refuses to plan before design approval or a recorded skip attestation.
 - Orders repo tasks by the dependency DAG.

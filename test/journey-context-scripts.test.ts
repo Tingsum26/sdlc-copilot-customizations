@@ -14,6 +14,7 @@ const recordDecision = join(root, "scripts", "record-human-decision.mjs");
 const renderPr = join(root, "scripts", "render-agent-pr.mjs");
 const recordPr = join(root, "scripts", "record-journey-pr.mjs");
 const checkOnboarding = join(root, "scripts", "check-journey-onboarding.mjs");
+const validateCodeContext = join(root, "scripts", "validate-code-context-evidence.mjs");
 
 describe("GitHub Journey Context Receipt scripts", () => {
   it("pins approved upstream artifacts and rejects a stale receipt", () => {
@@ -136,6 +137,47 @@ describe("GitHub Journey Context Receipt scripts", () => {
       const ready = spawnSync(node, [checkOnboarding, "--workspace", workspace, "--repositories", "account-opening-api", "--repository-revisions", "account-opening-api=def456"], { encoding: "utf8" });
       expect(ready.status, ready.stderr).toBe(0);
       expect(JSON.parse(ready.stdout).ready).toBe(true);
+    } finally {
+      rmSync(workspace, { recursive: true, force: true });
+    }
+  });
+
+  it("requires structured, workspace-contained code-context evidence", () => {
+    const workspace = mkdtempSync(join(tmpdir(), "code-context-evidence-"));
+    try {
+      mkdirSync(join(workspace, "docs", "01-context"), { recursive: true });
+      writeFileSync(join(workspace, "docs", "01-context", "code-context.md"), `# Code Context — AO
+
+## Repository Inventory
+| Repository | Channel | Commit | Build / test evidence | Source roots | Freshness |
+| --- | --- | --- | --- | --- | --- |
+| api | API | abc | mvn test | src | CURRENT |
+
+## Entry Points and Consumers
+| Entry point / screen | Repository | Commit | File / symbol | Consumer or route | Evidence level |
+| --- | --- | --- | --- | --- | --- |
+| open | api | abc | A.java:open | POST /open | CODE_VERIFIED |
+
+## API Contract Evidence
+| Contract / DTO | Server evidence | Client evidence | Compatibility / flag note | Evidence level |
+| --- | --- | --- | --- | --- |
+| Open | api@abc:A | web@abc:B | additive | CODE_PROVEN |
+
+## Evidence Register
+| Claim | Evidence level | Repository | Commit | File / symbol | Source / command |
+| --- | --- | --- | --- | --- | --- |
+| route | CODE_VERIFIED | api | abc | A.java:open | source |
+
+## Known Gaps and Next Evidence
+| Gap | Why it matters | Smallest evidence needed | Owner |
+| --- | --- | --- | --- |
+| none | none | none | analyst |
+`);
+      const valid = spawnSync(node, [validateCodeContext, "--workspace", workspace, "--artifact", "docs/01-context/code-context.md", "--kind", "code-context"], { encoding: "utf8" });
+      expect(valid.status, valid.stderr).toBe(0);
+      const escaped = spawnSync(node, [validateCodeContext, "--workspace", workspace, "--artifact", "../outside.md", "--kind", "code-context"], { encoding: "utf8" });
+      expect(escaped.status).not.toBe(0);
+      expect(escaped.stderr).toMatch(/escapes/i);
     } finally {
       rmSync(workspace, { recursive: true, force: true });
     }

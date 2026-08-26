@@ -26,3 +26,13 @@ An onboarding document is stale when its source commit, API schema, screen,
 flag, or dependency edge no longer matches the checkout. Mark it
 `POSSIBLY_STALE` and re-run targeted analysis; never silently refresh the
 document with guesses.
+
+For technical call relationships, use an evidence hierarchy: (1) checked
+source on both client and server sides, or a checked generated/OpenAPI
+contract; (2) a local deterministic symbol/indexing output that agrees with
+source; (3) a one-sided source fact; (4) documentation or configuration hint.
+Only level 1 is `CODE_PROVEN`. Levels 2–4 may guide investigation but must be
+recorded as supplementary evidence, `UNVERIFIED`, or `KNOWN_GAP` as
+appropriate. Optional local scanners such as SCIP, CodeQL, or Joern are never
+an MVP dependency: record tool/version/command/output when present, do not
+install Docker or upload code, and never fabricate scanner output.

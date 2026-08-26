@@ -25,12 +25,14 @@ any Epic/ticket branch.
 2. Ask the human for the hybrid type (in-app WebView vs external browser) instead of assuming.
 3. Create `docs/01-context/journey-baseline.md`,
    `repository-landscape.md`, `api-call-graph.md`, and `code-context.md` with
-   source commits and evidence labels. Create
+   source commits and evidence labels. Use `templates/api-call-graph.md` and
+   `templates/code-context.md` for the two technical evidence packs. Create
    `.sdlc/journey-onboarding.json` from `templates/journey-onboarding.json`.
 4. Add one approved/onboarding entry for every participating API/Web/iOS/Android
    repository. A repository entry links to its detailed repository onboarding,
    declares channel, source commit and `KNOWN_GAP` where evidence is absent.
-5. Keep the manifest `PENDING_APPROVAL` until a person reviews the onboarding
+5. Run `validate-code-context-evidence.mjs` for the code-context and API-call-
+   graph artifacts. Keep the manifest `PENDING_APPROVAL` until a person reviews the onboarding
    PR. Only a human changes it and each required artifact to `APPROVED` (or
    records an evidence-backed gap accepted for this Journey).
 6. Mark missing channels `KNOWN_GAP`; do not mark the overall onboarding

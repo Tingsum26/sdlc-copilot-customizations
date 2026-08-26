@@ -7,12 +7,13 @@
     { "id": "confluence", "deployment": "LOCAL_INTERNAL_ADAPTER", "required": false, "purpose": "Read authorized team knowledge", "containsModel": false },
     { "id": "github-enterprise", "deployment": "LOCAL_INTERNAL_ADAPTER", "required": false, "purpose": "Read repository, PR and check context", "containsModel": false },
     { "id": "figma-desktop", "deployment": "LOCAL_OPTIONAL", "required": false, "purpose": "Read approved design context", "containsModel": false },
-    { "id": "code-graph", "deployment": "LOCAL_EXPERIMENT", "required": false, "purpose": "Architecture and cross-repository HTTP relationships", "containsModel": false }
+    { "id": "code-graph", "deployment": "LOCAL_EXPERIMENT", "required": false, "purpose": "Optional locally configured source/symbol analysis (for example SCIP, CodeQL, or Joern) used only as supplementary provenance for architecture and HTTP relationships", "containsModel": false }
   ],
   "skills": [
     { "name": "start-epic", "path": "central/skills/workflow/start-epic/SKILL.md", "required": true },
     { "name": "initialize-journey-workspace", "path": "central/skills/workflow/initialize-journey-workspace/SKILL.md", "required": true },
     { "name": "advance-stage", "path": "central/skills/workflow/advance-stage/SKILL.md", "required": true },
+    { "name": "record-human-decision", "path": "central/skills/workflow/record-human-decision/SKILL.md", "required": true },
     { "name": "impact-analysis", "path": "central/skills/analysis/impact-analysis/SKILL.md", "required": false },
     { "name": "design-review", "path": "central/skills/design/design-review/SKILL.md", "required": false },
     { "name": "verification-loop", "path": "central/skills/implement/verification-loop/SKILL.md", "required": false },
@@ -26,6 +27,9 @@
     { "name": "prepare-stage-context", "path": "central/skills/workflow/prepare-stage-context/SKILL.md", "required": true },
     { "name": "import-pod-members", "path": "central/skills/workflow/import-pod-members/SKILL.md", "required": true },
     { "name": "analyze-code-context", "path": "central/skills/analysis/analyze-code-context/SKILL.md", "required": false },
+    { "name": "build-repository-map", "path": "central/skills/analysis/build-repository-map/SKILL.md", "required": false },
+    { "name": "assess-context-freshness", "path": "central/skills/analysis/assess-context-freshness/SKILL.md", "required": false },
+    { "name": "trace-api-contract", "path": "central/skills/analysis/trace-api-contract/SKILL.md", "required": false },
     { "name": "grill-requirement", "path": "central/skills/analysis/grill-requirement/SKILL.md", "required": false },
     { "name": "assess-api-compatibility", "path": "central/skills/analysis/assess-api-compatibility/SKILL.md", "required": false },
     { "name": "design-solution", "path": "central/skills/design/design-solution/SKILL.md", "required": false },

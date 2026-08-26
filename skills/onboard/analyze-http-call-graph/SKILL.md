@@ -10,10 +10,18 @@ version: "1.0"
 Journey or compatibility analysis needs caller→endpoint edges and no graph scanner is installed.
 
 ## Procedure
-1. Collect endpoints (controllers/routes/OpenAPI) and clients (Feign/WebClient/RestTemplate/fetch/Retrofit/URLSession).
-2. Match by service name, method, and normalized path.
-3. Label each edge with confidence and evidence; `AI_INFERRED` for unresolved matches.
-4. Include the edges in the journey manifest draft for the human to commit.
+1. Run `trace-api-contract`. Collect endpoints (controllers/routes/OpenAPI) and
+   clients (Feign/WebClient/RestTemplate/fetch/Retrofit/URLSession/WebView
+   bridge), recording repository, immutable commit, file and symbol for both.
+2. Match only by checked method, normalized path and compatible contract
+   evidence. Service names, environment URLs and ticket wording are discovery
+   hints, not a match criterion.
+3. Use `CODE_PROVEN` only when both sides or a checked generated/OpenAPI
+   contract prove the edge. Use `UNVERIFIED` or `KNOWN_GAP` for unresolved
+   matches; never present `AI_INFERRED` as an operational dependency.
+4. Use `templates/api-call-graph.md`, include unmatched facts and graph-tool
+   provenance, then run `validate-code-context-evidence.mjs` before adding the
+   graph to the Journey manifest draft for human review.
 
 ## Output contract
 HTTP edges with provenance. This is the Level-0 fallback and must never claim scanner-grade completeness.
