@@ -81,6 +81,7 @@ describe("central catalog", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.agents).toBe(13);
     expect(manifest.skills).toBe(47);
+    expect(manifest.prompts).toBe(14);
     expect(manifest.instructions).toBe(23);
     expect(manifest.policies).toBe(16);
     expect(manifest.templates).toBe(30);
@@ -133,7 +134,21 @@ describe("central catalog", () => {
   it("manifest counts include hooks and profiles", () => {
     const manifest = JSON.parse(readFileSync(`${root}/manifests/bundle-manifest.json`, "utf8"));
     expect(manifest.hooks).toBe(1);
-    expect(manifest.profiles).toBe(2);
+    expect(manifest.profiles).toBe(6);
+  });
+
+  it("ships role-bound Prompt Files for each interactive MVP entry point", () => {
+    const files = readdirSync(`${root}/prompts`).filter((name) => name.endsWith(".prompt.md"));
+    expect(files).toHaveLength(14);
+    for (const file of files) {
+      const content = readFileSync(`${root}/prompts/${file}`, "utf8");
+      const agent = content.match(/^agent: '([^']+)'$/m)?.[1];
+      expect(content, file).toMatch(/^---\n[\s\S]+?\n---\n/);
+      expect(content, file).toContain("## Inputs");
+      expect(content, file).toContain("## Required outcome");
+      expect(agent, file).toBeTruthy();
+      expect(expectedAgents, `${file} -> ${agent}`).toContain(agent!);
+    }
   });
 
   it("declares hooks for deterministic lifecycle events only", () => {

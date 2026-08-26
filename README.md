@@ -1,8 +1,8 @@
 # sdlc-copilot-customizations
 
 A public, **fictional-data** customization bundle for a Local-Copilot SDLC
-platform. This repository contains the central Agents, Skills, Instructions,
-Policies, Templates, Hooks, Evals, Manifests, and MCP catalog used to drive a
+platform. This repository contains the central Agents, Skills, Prompt Files,
+Instructions, Policies, Templates, Hooks, Evals, Manifests, and MCP catalog used to drive a
 spec → plan → task workflow with GitHub Copilot agent mode in VS Code.
 
 ## GitHub-only MVP mode
@@ -51,6 +51,21 @@ only the optional local MCP connectors actually needed by that Journey (Jira,
 Confluence, GitHub Enterprise, Figma or code graph); none persist workflow
 state. `mcp/github-only-mvp-profile.json` is the selected MVP profile.
 
+## Stage Prompt Files
+
+`prompts/` holds versioned, role-bound entry prompts for every MVP stage:
+Journey onboarding, Epic start/resume/analysis, requirements, design, planning,
+Java/Web/iOS/Android implementation, test design, accessibility, and PR review.
+They ask only for current task parameters. The selected Agent, routed Skills,
+Instructions and stage gates remain the source of truth, so a Prompt File
+cannot bypass context receipts or approval.
+
+The current VSIX bundle installer copies and activates them as global
+`chat.promptFilesLocations`; type `/` in Copilot Chat to run one. Without the
+VSIX, copy the selected files into a Journey repository's `.github/prompts/`
+folder. Prompt Files work with local VS Code extension-host agents; the MVP is
+deliberately designed for that local Copilot workflow.
+
 > ⚠️ **Fictional data only.** Every name, ticket, repository, and principal in
 > this bundle is invented. Nothing here references real credentials, real
 > identifiers, or production systems.
@@ -70,13 +85,14 @@ only the repository wrapper (README, `.gitignore`, git history) is new.
 |----------------|-------|--------------------------------------------------------|
 | `agents/`      | 13    | `.agent.md` role definitions (planner, implementers, …) |
 | `skills/`      | 47    | `SKILL.md` files organized by lifecycle phase           |
+| `prompts/`     | 14    | `.prompt.md` stage entry points bound to named Agents    |
 | `instructions/`| 23    | Shared operating, context, quality and domain rules   |
-| `policies/`    | 15    | Machine-readable policy JSON (+ `README.md` vocabulary) |
+| `policies/`    | 16    | Machine-readable policy JSON (+ `README.md` vocabulary) |
 | `templates/`   | 30    | Reusable artifact, onboarding and GitHub report templates |
 | `evals/`       | 4     | Behavior, RED/GREEN, and skill-contract eval scenarios |
 | `hooks/`       | 2     | Hook manifest + local `run-hook.mjs` runner            |
 | `manifests/`   | 2     | Bundle inventory, routing and typed Agent contracts    |
-| `mcp/`         | 2     | MCP server catalog + role profiles                     |
+| `mcp/`         | 2     | MCP server catalog + six role profiles                 |
 
 The historical Workflow-Service-oriented files remain as a Phase 2 reference.
 The GitHub-only MVP additions intentionally supersede them at runtime; this is
