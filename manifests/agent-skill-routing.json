@@ -60,6 +60,11 @@
     "userStartsAgent": true,
     "agentMaySelectOnlyAllowedSkills": true,
     "skillsAreNotModelAgents": true,
-    "evidenceField": "appliedSkills"
+    "evidenceField": "appliedSkills",
+    "exclusiveSkillOwners": {
+      "onboard-journey": "code-context-analyst",
+      "onboard-repository": "code-context-analyst",
+      "analyze-http-call-graph": "code-context-analyst"
+    }
   }
 }

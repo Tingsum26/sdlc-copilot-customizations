@@ -172,4 +172,14 @@ describe("central catalog", () => {
       expect(routing.agents[agent].requiredSkills, agent).toContain("publish-agent-report");
     }
   });
+
+  it("assigns technical Journey onboarding and HTTP graph ownership to code-context-analyst only", () => {
+    const routing = JSON.parse(readFileSync(resolve(root, "manifests/agent-skill-routing.json"), "utf8"));
+    expect(routing.rules.exclusiveSkillOwners).toMatchObject({
+      "onboard-journey": "code-context-analyst",
+      "onboard-repository": "code-context-analyst",
+      "analyze-http-call-graph": "code-context-analyst",
+    });
+    expect(routing.agents["epic-delivery-analyst"].allowedSkills).not.toContain("onboard-journey");
+  });
 });

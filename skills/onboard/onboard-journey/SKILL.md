@@ -6,6 +6,13 @@ version: "1.0"
 
 # Onboard Journey
 
+## Owner
+
+Only `code-context-analyst` performs this Skill and authors the technical
+cross-repository relationship artifacts. `delivery-coordinator` may route to
+it; `epic-delivery-analyst` may consume the approved result for delivery
+planning but must not replace its code-proven API/HTTP graph.
+
 ## When to use
 A Journey is new, incomplete, or explicitly blocked by `start-epic` with
 `BLOCKED_BY_ONBOARDING`. This is a reusable lifecycle workflow, separate from
